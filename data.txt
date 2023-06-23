@@ -1,0 +1,2 @@
+data,latitude,longitude,magnitude
+https://python-visualization.github.io/folium/quickstart.html,55.17869847587624, 61.3284869196522,6.0
