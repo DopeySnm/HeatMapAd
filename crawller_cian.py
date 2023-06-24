@@ -19,10 +19,10 @@ class Parser:
         return "\n".join(result_lst_links)
 
 class Crawller:
-    def __init__(self):
+    def __init__(self, path):
         self.useragent = UserAgent()
         self.options = webdriver.ChromeOptions()
-        self.service = Service(r"/Chromedriver/chromedriver.exe")
+        self.service = Service(path)
         self.driver = webdriver.Chrome(service=self.service, options=self.options)
         self.parser = Parser()
         self.url = "https://chelyabinsk.cian.ru/cat.php?deal_type=sale&engine_version=2&offer_type=flat&p=1&region=5048&room1=1&room2=1&room3=1&room4=1&room5=1&room6=1&room7=1&room9=1"
@@ -89,14 +89,13 @@ class Crawller:
             print(traceback.format_exc())
         finally:
             print("Работа Краулера окончена")
-            return self.driver.page_source
 
     def __del__(self):
         self.driver.close()
         self.driver.quit()
 
-ctrl = Crawller()
-html = ctrl.start()
+ctrl = Crawller("/Chromedriver/chromedriver.exe")
+ctrl.start()
 
 # url = "https://chelyabinsk.cian.ru/cat.php?deal_type=sale&engine_version=2&offer_type=flat&p=1&region=5048&room1=1&room2=1"
 #
