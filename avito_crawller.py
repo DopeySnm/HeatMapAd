@@ -13,7 +13,7 @@ class Parser:
     def get_links_ads(self, html: str) -> str:
         soup = BeautifulSoup(html, "lxml")
         result_lst_links = []
-        for name in soup.find_all('div', class_="iva-item-body-KLUuy"):
+        for name in soup.find_all('div', class_="iva-item-title-py3i_"):
             link_ad = name.find('a', class_="styles-module-root-QmppR styles-module-root_noVisited-aFA10")['href']
             result_lst_links.append(link_ad)
         return "\n".join(result_lst_links)
@@ -25,7 +25,7 @@ class Crawller:
         self.service = Service(r"/chromedriver/chromedriver.exe")
         self.driver = webdriver.Chrome(service=self.service, options=self.options)
         self.parser = Parser()
-        self.url = "https://www.avito.ru/chelyabinsk/kvartiry/prodam-ASgBAgICAUSSA8YQ?cd=1&f=ASgBAQICAUSSA8YQAUDKCMT~WIZZilmarAGYrAGWrAGUrAGIWYBZglmEWfzPMg"
+        self.url = "https://www.avito.ru/chelyabinsk/kvartiry/prodam-ASgBAgICAUSSA8YQ?cd=1&f=ASgBAQICAUSSA8YQAUDKCMT~WIZZilmarAGYrAGWrAGUrAGIWYBZglmEWfzPMg&p=1"
 
     def add_useragent(self):
         """
@@ -46,7 +46,7 @@ class Crawller:
 
     def scroll_page(self):
         SCROLL_PAUSE_TIME = 0.5
-        self.waiting_for_element(15, By.CLASS_NAME, "_93444fe79c--header--BEBpX")
+        self.waiting_for_element(15, By.CLASS_NAME, "iva-item-title-py3i_")
 
         last_height = self.driver.execute_script("return document.body.scrollHeight")
 
@@ -62,13 +62,13 @@ class Crawller:
 
     def next_page(self):
         url_p = self.url.split("&")
-        now_p = url_p[1][2::]
-        url_p[1] = "p=" + str(int(now_p) + 1)
+        now_p = url_p[2][2::]
+        url_p[2] = "p=" + str(int(now_p) + 1)
         self.url = "&".join(url_p)
 
     def write_txt(self, text):
         with open("avito.txt", "a", encoding="utf-8") as f:
-            f.write(text + "\n")
+            f.write("www.avito.ru" + text + "\n")
 
     def start(self):
         try:
