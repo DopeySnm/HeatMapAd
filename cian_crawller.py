@@ -7,6 +7,7 @@ import traceback
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
 
 
 class Parser:
@@ -22,11 +23,16 @@ class Crawller:
     def __init__(self):
         self.useragent = UserAgent()
         self.options = webdriver.ChromeOptions()
+        self.options.add_argument("--headless=new")
         self.service = Service(r"/chromedriver/chromedriver.exe")
         self.driver = webdriver.Chrome(service=self.service, options=self.options)
         self.parser = Parser()
         self.url = "https://chelyabinsk.cian.ru/cat.php?deal_type=sale&engine_version=2&offer_type=flat&p=1&region=5048&room1=1&room2=1&room3=1&room4=1&room5=1&room6=1&room7=1&room9=1"
 
+    def get_actor(self, link: str):
+        self.url = link
+        data = self.driver.page_source
+        #put parser method here -->  return parsermethod(data)
     def add_useragent(self):
         """
         Добавляет user-agent к драйверу
@@ -46,7 +52,7 @@ class Crawller:
 
     def scroll_page(self):
         SCROLL_PAUSE_TIME = 0.5
-        self.waiting_for_element(15, By.CLASS_NAME, "_93444fe79c--header--BEBpX")
+        self.waiting_for_element(5, By.CLASS_NAME, "_93444fe79c--header--BEBpX")
 
         last_height = self.driver.execute_script("return document.body.scrollHeight")
 
@@ -88,7 +94,7 @@ class Crawller:
         except Exception:
             print(traceback.format_exc())
         finally:
-            print("Работа Краулера окончена")
+            print("Работа Краулера Циан окончена")
             return self.driver.page_source
 
     def __del__(self):
