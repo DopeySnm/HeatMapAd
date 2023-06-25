@@ -67,7 +67,7 @@ class Crawller:
         self.url = "&".join(url_p)
 
     def write_txt(self, text):
-        with open("links2.txt", "a", encoding="utf-8") as f:
+        with open("cian.txt", "a", encoding="utf-8") as f:
             f.write(text + "\n")
 
     def start(self):

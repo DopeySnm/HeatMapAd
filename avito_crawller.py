@@ -29,6 +29,8 @@ class Crawller:
 
     def get_actor(self, link: str):
         self.url = link
+        data = self.driver.page_source
+        #put parser method here -->  return parsermethod(data)
 
     def add_useragent(self):
         """
