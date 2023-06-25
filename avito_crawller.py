@@ -13,8 +13,8 @@ class Parser:
     def get_links_ads(self, html: str) -> str:
         soup = BeautifulSoup(html, "lxml")
         result_lst_links = []
-        for name in soup.find_all('div', class_="_93444fe79c--content--lXy9G"):
-            link_ad = name.find('a', class_="_93444fe79c--link--eoxce")['href']
+        for name in soup.find_all('div', class_="iva-item-body-KLUuy"):
+            link_ad = name.find('a', class_="styles-module-root-QmppR styles-module-root_noVisited-aFA10")['href']
             result_lst_links.append(link_ad)
         return "\n".join(result_lst_links)
 
@@ -22,10 +22,10 @@ class Crawller:
     def __init__(self):
         self.useragent = UserAgent()
         self.options = webdriver.ChromeOptions()
-        self.service = Service(r"/Chromedriver/chromedriver.exe")
+        self.service = Service(r"/chromedriver/chromedriver.exe")
         self.driver = webdriver.Chrome(service=self.service, options=self.options)
         self.parser = Parser()
-        self.url = "https://chelyabinsk.cian.ru/cat.php?deal_type=sale&engine_version=2&offer_type=flat&p=1&region=5048&room1=1&room2=1&room3=1&room4=1&room5=1&room6=1&room7=1&room9=1"
+        self.url = "https://www.avito.ru/chelyabinsk/kvartiry/prodam-ASgBAgICAUSSA8YQ?cd=1&f=ASgBAQICAUSSA8YQAUDKCMT~WIZZilmarAGYrAGWrAGUrAGIWYBZglmEWfzPMg"
 
     def add_useragent(self):
         """
@@ -62,12 +62,12 @@ class Crawller:
 
     def next_page(self):
         url_p = self.url.split("&")
-        now_p = url_p[3][2::]
-        url_p[3] = "p=" + str(int(now_p) + 1)
+        now_p = url_p[1][2::]
+        url_p[1] = "p=" + str(int(now_p) + 1)
         self.url = "&".join(url_p)
 
     def write_txt(self, text):
-        with open("links2.txt", "a", encoding="utf-8") as f:
+        with open("avito.txt", "a", encoding="utf-8") as f:
             f.write(text + "\n")
 
     def start(self):
@@ -88,7 +88,7 @@ class Crawller:
         except Exception:
             print(traceback.format_exc())
         finally:
-            print("Работа Краулера окончена")
+            print("Работа Краулера Авито окончена")
             return self.driver.page_source
 
     def __del__(self):
