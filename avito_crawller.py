@@ -15,7 +15,7 @@ class Parser:
         result_lst_links = []
         for name in soup.find_all('div', class_="iva-item-title-py3i_"):
             link_ad = name.find('a', class_="styles-module-root-QmppR styles-module-root_noVisited-aFA10")['href']
-            result_lst_links.append(link_ad)
+            result_lst_links.append("www.avito.ru" + link_ad)
         return "\n".join(result_lst_links)
 
 class Crawller:
@@ -26,6 +26,9 @@ class Crawller:
         self.driver = webdriver.Chrome(service=self.service, options=self.options)
         self.parser = Parser()
         self.url = "https://www.avito.ru/chelyabinsk/kvartiry/prodam-ASgBAgICAUSSA8YQ?cd=1&f=ASgBAQICAUSSA8YQAUDKCMT~WIZZilmarAGYrAGWrAGUrAGIWYBZglmEWfzPMg&p=1"
+
+    def get_actor(self, link: str):
+        self.url = link
 
     def add_useragent(self):
         """
@@ -68,7 +71,7 @@ class Crawller:
 
     def write_txt(self, text):
         with open("avito.txt", "a", encoding="utf-8") as f:
-            f.write("www.avito.ru" + text + "\n")
+            f.write(text + "\n")
 
     def start(self):
         try:
