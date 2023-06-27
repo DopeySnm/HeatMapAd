@@ -1,0 +1,11 @@
+# PyCharm
+.idea/
+*.iml
+modules.xml
+*.ipr
+*.iws
+.venv/
+# Byte-compiled / optimized / DLL files
+pycache/
+*.py[cod]
+*$py.class
