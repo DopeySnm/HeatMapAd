@@ -1,70 +1,117 @@
-import pandas as pd
 import folium
-from folium.plugins import HeatMap
-
-from city import City
-from ad import Ad
+from folium.plugins import HeatMap, Draw
+from model.ad import Ad
+from model.infrastructure import Infrastructure
+from model.location import Location
+from model.real_estate import RealEstate
 
 
 class HeatMapWork:
-    def __init__(self, city: City):
-        self.city = city
-        self.listAd = []
+    def __init__(self, start_location: Location):
+        self.start_location = start_location
+        self.list_ad = []
+        self.list_infrastructure = []
 
-    def setAdList(self, data):
-        self.listAd += data
+    def set_ad_list(self, data):
+        self.list_ad += data
 
-    def getHtml(self):
+    def set_infrastructure_list(self, data):
+        self.list_infrastructure += data
 
-        # df = pd.read_csv(self.path)
+    def get_html_description(self, re: RealEstate):
+        if isinstance(re, Ad):
+            result_description = "Объявление: " + re.title + "<br>" + "Цена: " + re.price.__str__() + "<br>" + "Ссылка: " + re.linc
 
-        myMap = folium.Map(location=(self.city.y, self.city.y),
+        if isinstance(re, Infrastructure):
+            result_description = "Тип: " + re.type + "<br>" + "Название: " + re.title
+
+        if re.description != None:
+            for description in re.description.args:
+                result_description.join(description.__str__())
+
+        return result_description
+
+    def add_heat_map_ad_to_map(self):
+        matrix = [[ad.location.coordinate_x, ad.location.coordinate_y, ad.magnitude] for ad in self.list_ad]
+        # создаём матрицу с кориднатами и магнитудой для тепловой карты
+
+        HeatMap(data=matrix).add_to(self.ad_group.add_to(self.my_map))  # добавляем тепловые метки
+
+    def add_ad_to_map(self):
+        for ad in self.list_ad:  # добавляем метки с описанием
+            self.ad_group.add_child(  # добавляем их в группу тепловой карты с названием "Объявления"
+                folium.CircleMarker([ad.location.coordinate_x, ad.location.coordinate_y],
+                                    radius=5,
+                                    popup=folium.Popup(html=self.get_html_description(ad)),  # инф при нажатии
+                                    color="transparent",
+                                    tooltip=folium.Tooltip(text=self.get_html_description(ad)),  # инф при наведении
+                                    fill=True,
+                                    fill_color="transparent").add_to(self.my_map))
+
+    def add_infrastructure_to_map(self):
+        infrastructure_group = folium.FeatureGroup(name="Инфраструктуры").add_to(self.my_map)
+
+        for infrastructure in self.list_infrastructure:  # добавляем метки с описанием
+            infrastructure_group.add_child(  # добавляем их в группу тепловой карты с названием "Объявления"
+                folium.Marker([infrastructure.location.coordinate_x, infrastructure.location.coordinate_y],
+                              radius=5,
+                              popup=folium.Popup(html=self.get_html_description(infrastructure)),  # инф при нажатии
+                              tooltip=folium.Tooltip(text=self.get_html_description(infrastructure)),  # инф при наведении
+                              ).add_to(self.my_map))
+
+    def get_html_map(self):
+        self.my_map = folium.Map(location=(self.start_location.coordinate_x, self.start_location.coordinate_y),
                            max_bounds=True,
-                           tiles="openstreetmap",
-                           zoom_start=6,
-                           min_zoom=3)
+                           tiles=folium.raster_layers.TileLayer(tiles='openstreetmap', name='Тепловая крата'),
+                           zoom_start=12,
+                           min_zoom=3)# создаём крату
 
-        # myMap = folium.Map(location=(55.17869847587624, 61.3284869196522),
-        #                    max_bounds=True,
-        #                    tiles="openstreetmap",
-        #                    zoom_start=6,
-        #                    min_zoom=3)
+        self.ad_group = folium.FeatureGroup(name="Объявления")  # создаём группу тепловой карты "Объявления"
 
-        for ad in self.listAd:
-            folium.CircleMarker([ad.x, ad.y],
-                                radius=5,
-                                popup=folium.Popup(html=ad.getDiscription),#ad.data,  # инф при нажатии
-                                color="transparent",
-                                tooltip=ad.data,  # инф при наведении
-                                fill=True,
-                                fill_color="transparent").add_to(myMap)
+        self.add_heat_map_ad_to_map() # добавляем тепловые метки объявлении
 
-        # for index, row in df.iterrows():
-        #     folium.CircleMarker([row['latitude'], row['longitude']],
-        #                         radius=5,
-        #                         popup=row['data'],  # инф при нажатии
-        #                         color="transparent",
-        #                         tooltip=row['data'],  # инф при наведении
-        #                         fill=True,
-        #                         fill_color="transparent").add_to(myMap)
+        self.add_ad_to_map() # добавляем метки объявлении с описанием
 
-        ## matrix = df[['latitude', 'longitude', 'magnitude']]
+        self.add_infrastructure_to_map() # добавляем метки инфраструктур
 
-        matrix = [[ad.x, ad.y, ad.magnitude] for ad in self.listAd]
+        folium.LayerControl().add_to(self.my_map) # добавляет панельку с FeatureGroup которая позволяет скрывать их
 
-        HeatMap(matrix).add_to(myMap)
-        myMap.show_in_browser()
-        return myMap.get_root().render()
+        return self.my_map.get_root().render()
 
+def test():
+    start_location = Location(city="Челябинск", coordinate_x=55.17869847587624, coordinate_y=61.3284869196522)
 
-objCity = City(name="Chelybinsc", x=55.17869847587624, y=61.3284869196522)
+    hp = HeatMapWork(start_location=start_location)
 
-hp = HeatMapWork(city=objCity)
+    list_infrastructure = []
+    list_infrastructure.append(
+        Infrastructure(location=Location(coordinate_x=51.17869847587624, coordinate_y=62.3284869196522, city="Челябинск"),
+        title="Садик №3",
+        type="Образовательное учереждение"))
 
-listAd = []
-listAd.append(Ad(x=56.17869847587624, y=62.3284869196522, city=objCity, data="-квартира", magnitude=0.5))
-listAd.append(Ad(x=57.17869847587624, y=63.3284869196522, city=objCity, data="квартира1", magnitude=0.5))
+    hp.set_infrastructure_list(list_infrastructure)
 
-hp.setAdList(listAd)
+    list_ad = []
+    list_ad.append(
+        Ad(
+            location=Location(coordinate_x=56.17869847587624, coordinate_y=62.3284869196522, city="Челябинск"),
+            title="квартира",
+            magnitude=0.5,
+            price=1000,
+            linc="Сслыка"))
 
-map_html = hp.getHtml()
+    list_ad.append(
+        Ad(
+            location=Location(coordinate_x=57.17869847587624, coordinate_y=63.3284869196522, city="Челябинск"),
+            title="квартира1",
+            magnitude=0.5,
+            price=1000,
+            linc="Сслыка"))
+
+    hp.set_ad_list(list_ad)
+
+    map_html = hp.get_html_map()
+
+    hp.my_map.show_in_browser()
+
+test()
