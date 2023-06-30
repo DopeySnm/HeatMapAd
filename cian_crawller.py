@@ -10,6 +10,13 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 
 
+class Notice:
+    title: str
+    price: float
+    description: str
+    type: str
+    area: float
+    link: str
 class Parser:
     def get_links_ads(self, html: str) -> str:
         soup = BeautifulSoup(html, "lxml")
@@ -19,20 +26,51 @@ class Parser:
             result_lst_links.append(link_ad)
         return "\n".join(result_lst_links)
 
+
 class Crawller:
     def __init__(self):
         self.useragent = UserAgent()
         self.options = webdriver.ChromeOptions()
-        self.options.add_argument("--headless=new")
+        #self.options.add_argument("--headless=new")
         self.service = Service(r"/chromedriver/chromedriver.exe")
         self.driver = webdriver.Chrome(service=self.service, options=self.options)
         self.parser = Parser()
         self.url = "https://chelyabinsk.cian.ru/cat.php?deal_type=sale&engine_version=2&offer_type=flat&p=1&region=5048&room1=1&room2=1&room3=1&room4=1&room5=1&room6=1&room7=1&room9=1"
 
-    def get_actor(self, link: str):
-        self.url = link
+    def get_notice(self, link: str) -> Notice:
+        self.driver.get(link)
         data = self.driver.page_source
-        #put parser method here -->  return parsermethod(data)
+        soup = BeautifulSoup(data, "lxml")
+        n = Notice()
+        maindata = []
+        #looking for type and area
+        for div in soup.findAll('div', {'class': 'a10a3f92e9--item--qJhdR'}):
+            d = div.find('p', class_='a10a3f92e9--color_black_100--kPHhJ a10a3f92e9--lineHeight_22px--bnKK9 a10a3f92e9--fontWeight_normal--P9Ylg a10a3f92e9--fontSize_16px--RB9YW a10a3f92e9--display_block--pDAEx a10a3f92e9--text--g9xAG a10a3f92e9--text_letterSpacing__normal--xbqP6').text
+            maindata.append(d)
+        #looking for description
+        for div in soup.find_all('div', {'class': 'a10a3f92e9--content--TjQir'}):
+            d = div.find('span', class_='a10a3f92e9--color_black_100--kPHhJ a10a3f92e9--lineHeight_6u--A1GMI a10a3f92e9--fontWeight_normal--P9Ylg a10a3f92e9--fontSize_16px--RB9YW a10a3f92e9--display_block--pDAEx a10a3f92e9--text--g9xAG a10a3f92e9--text_letterSpacing__0--mdnqq a10a3f92e9--text_whiteSpace__pre-wrap--scZwb')
+            n.description = d.text
+        #looking for price
+
+        for div in soup.find_all('div', {'class': 'a10a3f92e9--amount--ON6i1'}):
+            d = div.find('span', class_='a10a3f92e9--color_black_100--kPHhJ a10a3f92e9--lineHeight_9u--qr919 a10a3f92e9--fontWeight_bold--ePDnv a10a3f92e9--fontSize_28px--xlUV0 a10a3f92e9--display_block--pDAEx a10a3f92e9--text--g9xAG')
+            n.price = int(d.text[:-1].replace('\xa0', ''))
+        #if notice page contains title class
+        if (data.__contains__('a10a3f92e9--title--FUlZg')):
+            for div in soup.find_all('div', {'class': 'a10a3f92e9--title--FUlZg'}):
+                d = div.find('h2',
+                             class_='a10a3f92e9--color_black_100--kPHhJ a10a3f92e9--lineHeight_9u--qr919 a10a3f92e9--fontWeight_bold--ePDnv a10a3f92e9--fontSize_28px--xlUV0 a10a3f92e9--display_block--pDAEx a10a3f92e9--text--g9xAG')
+                n.title = d.text
+        else:
+            for div in soup.find_all('div', {'class': 'a10a3f92e9--container--pWxZo'}):
+                d = div.find('h1', class_='a10a3f92e9--title--vlZwT')
+                n.title = d.text
+        n.type = maindata[0]
+        n.area = float(maindata[1].split()[0].replace(',', '.'))
+        n.link = link
+        return n
+
     def add_useragent(self):
         """
         Добавляет user-agent к драйверу
@@ -82,11 +120,9 @@ class Crawller:
                 self.driver.get(self.url)
 
                 self.scroll_page()
-
                 links_ads = self.parser.get_links_ads(self.driver.page_source)
-                # print(link_ad)
-                self.write_txt(links_ads)
-                # print("-" * 40)
+                for link in links_ads.split('\n'):
+                    self.get_notice(link)
                 self.next_page()
 
                 # print("*"*40)

@@ -1,3 +1,6 @@
+import random
+
+import requests
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 from selenium.webdriver.chrome.service import Service
@@ -15,21 +18,35 @@ class Parser:
         result_lst_links = []
         for name in soup.find_all('div', class_="iva-item-title-py3i_"):
             link_ad = name.find('a', class_="styles-module-root-QmppR styles-module-root_noVisited-aFA10")['href']
-            result_lst_links.append("www.avito.ru" + link_ad)
+            result_lst_links.append("https://www.avito.ru" + link_ad)
         return "\n".join(result_lst_links)
 
 class Crawller:
     def __init__(self):
         self.useragent = UserAgent()
         self.options = webdriver.ChromeOptions()
-        self.options.headless = True
+        #self.options.add_argument('--headless=new')
         self.service = Service(r"/chromedriver/chromedriver.exe")
         self.driver = webdriver.Chrome(service=self.service, options=self.options)
+        self.driver.request_interceptor = self.intercept_requests
         self.parser = Parser()
         self.url = "https://www.avito.ru/chelyabinsk/kvartiry/prodam-ASgBAgICAUSSA8YQ?cd=1&f=ASgBAQICAUSSA8YQAUDKCMT~WIZZilmarAGYrAGWrAGUrAGIWYBZglmEWfzPMg&p=1"
 
-    def get_actor(self, link: str):
-        self.url = link
+    def intercept_requests(self, request):
+        request.headers = {'ost': 'www.avito.ru',
+'User-Agent': self.useragent.random,
+'Accept': "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+'Accept-Language': 'ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3',
+'Accept-Encoding': 'gzip, deflate, br',
+'Connection': 'keep-alive',
+'Upgrade-Insecure-Requests': '1',
+'Sec-Fetch-Dest': 'document',
+'Sec-Fetch-Mode': 'navigate',
+'Sec-Fetch-Site': 'none'
+        }
+
+    def get_notice(self, link: str):
+        #self.url = link
         data = self.driver.page_source
         #put parser method here -->  return parsermethod(data)
 
@@ -82,10 +99,12 @@ class Crawller:
                 self.driver.get(self.url)
 
                 self.scroll_page()
-
                 links_ads = self.parser.get_links_ads(self.driver.page_source)
-                # print(link_ad)
-                self.write_txt(links_ads)
+                for link in links_ads.split('\n'):
+                    time.sleep(5)
+                    self.driver.get(link)
+                    self.get_notice(link)
+
                 # print("-" * 40)
                 self.next_page()
 
