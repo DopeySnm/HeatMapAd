@@ -5,7 +5,6 @@ from model.infrastructure import Infrastructure
 from model.location import Location
 from model.real_estate import RealEstate
 
-
 class HeatMapWork:
     def __init__(self, start_location: Location):
         self.start_location = start_location
@@ -77,6 +76,8 @@ class HeatMapWork:
         folium.LayerControl().add_to(self.my_map) # добавляет панельку с FeatureGroup которая позволяет скрывать их
 
         return self.my_map.get_root().render()
+
+
 
 def test():
     start_location = Location(city="Челябинск", coordinate_x=55.17869847587624, coordinate_y=61.3284869196522)
