@@ -8,3 +8,4 @@ modules.xml
 pycache/
 *.py[cod]
 *$py.class
+*.db
