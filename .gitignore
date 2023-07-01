@@ -4,6 +4,7 @@
 modules.xml
 *.ipr
 *.iws
+*.db
 .venv/
 # Byte-compiled / optimized / DLL files
 pycache/
