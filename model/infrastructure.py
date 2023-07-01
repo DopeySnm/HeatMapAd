@@ -1,4 +1,4 @@
-from model.description import Description
+from datetime import date
 from model.location import Location
 from model.real_estate import RealEstate
 
@@ -8,6 +8,6 @@ class Infrastructure(RealEstate):
                  type: str,
                  title: str,
                  location: Location,
-                 description: Description = None):
-        super().__init__(title, location, description)
+                 data_download: date):
+        super().__init__(title, location, data_download)
         self.type = type

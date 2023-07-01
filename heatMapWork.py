@@ -1,9 +1,11 @@
 import folium
-from folium.plugins import HeatMap, Draw
+from folium.plugins import HeatMap
 from model.ad import Ad
 from model.infrastructure import Infrastructure
 from model.location import Location
 from model.real_estate import RealEstate
+from datetime import date, datetime
+
 
 class HeatMapWork:
     def __init__(self, start_location: Location):
@@ -20,13 +22,12 @@ class HeatMapWork:
     def get_html_description(self, re: RealEstate):
         if isinstance(re, Ad):
             result_description = "Объявление: " + re.title + "<br>" + "Цена: " + re.price.__str__() + "<br>" + "Ссылка: " + re.linc
+            if re.description != None:
+                for description in re.description.args:
+                    result_description.join(description.__str__())
 
         if isinstance(re, Infrastructure):
             result_description = "Тип: " + re.type + "<br>" + "Название: " + re.title
-
-        if re.description != None:
-            for description in re.description.args:
-                result_description.join(description.__str__())
 
         return result_description
 
@@ -87,8 +88,9 @@ def test():
     list_infrastructure = []
     list_infrastructure.append(
         Infrastructure(location=Location(coordinate_x=51.17869847587624, coordinate_y=62.3284869196522, city="Челябинск"),
-        title="Садик №3",
-        type="Образовательное учереждение"))
+                       title="Садик №3",
+                       type="Образовательное учереждение",
+                       data_download=date.today()))
 
     hp.set_infrastructure_list(list_infrastructure)
 
@@ -99,7 +101,8 @@ def test():
             title="квартира",
             magnitude=0.5,
             price=1000,
-            linc="Сслыка"))
+            linc="Сслыка",
+            data_download=date.today()))
 
     list_ad.append(
         Ad(
@@ -107,7 +110,8 @@ def test():
             title="квартира1",
             magnitude=0.5,
             price=1000,
-            linc="Сслыка"))
+            linc="Сслыка",
+            data_download=date.today()))
 
     hp.set_ad_list(list_ad)
 
