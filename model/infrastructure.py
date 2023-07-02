@@ -1,7 +1,7 @@
 from datetime import date
 
-from model_location import Location
-from realEstate import RealEstate
+from location import Location
+from real_estate import RealEstate
 
 
 class Infrastructure(RealEstate):

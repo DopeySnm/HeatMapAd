@@ -1,8 +1,5 @@
-
 from datetime import date
-
-from model_location import Location
-
+from model.location import Location
 
 class RealEstate:
     def __init__(self,

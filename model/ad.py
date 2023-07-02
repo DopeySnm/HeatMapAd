@@ -1,8 +1,7 @@
 from datetime import date
-
-from model_description import Description
-from model_location import Location
-from realEstate import RealEstate
+from description import Description
+from location import Location
+from real_estate import RealEstate
 
 class Ad(RealEstate):
     def __init__(self,

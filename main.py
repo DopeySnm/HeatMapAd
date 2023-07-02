@@ -1,6 +1,5 @@
 from bs4 import BeautifulSoup as b
 import requests
-from model_ad import Ad
 
 URL = 'https://www.avito.ru/chelyabinsk/kvartiry/2-k._kvartira_64m_25et._2669178512?guests=2'
 r = requests.get(URL)

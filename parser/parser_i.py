@@ -1,6 +1,4 @@
-import zope.interface
-
-from model_ad import Ad
+from model.ad import Ad
 
 
 class Interface:

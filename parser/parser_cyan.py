@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 
 from main import soup
-from model_ad import Ad
+from model.ad import Ad
 from parser_i import Interface
 
 
