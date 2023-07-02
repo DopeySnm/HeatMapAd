@@ -41,25 +41,7 @@ class Crawller:
                 something = src.find_all('div', class_='item')
                 end = src.find('div', class_='faq').findChildren('p')
                 if len(end) != 0: raise Exception()
-                for item in something:
-                    org = Organization()
-                    org.Name = item.find('a').text
-                    strong_elements = item.find_all('strong', class_='autor')
-                    for strong in strong_elements:
-                        next_sibling = strong.next_sibling
-                        if next_sibling and next_sibling.string:
-                            info = next_sibling.string.strip()
-                            if str(strong).__contains__('Местоположение'):
-                                org.Address = info
-                            elif str(strong).__contains__('Адрес'):
-                                org.Address = info
-                            elif str(strong).__contains__('Тип'):
-                                org.Type = info
-                            elif str(strong).__contains__('Директор'):
-                                org.Head = info
-                            elif str(strong).__contains__('Телефон'):
-                                org.Number = info
-                    objects.append(org)
+                objects.extend(self.parse_data(something))
                 n = link.split('?')
                 new_link = n[0] + '?col=' + str(e) + '&' + n[1]
                 src = BeautifulSoup(requests.get(new_link).text, 'xml')
@@ -67,9 +49,29 @@ class Crawller:
             print(traceback.format_exc())
         return objects
 
-    def parse_data(self):
-        f = 10
-
+    def parse_data(self, something):
+        organizations = []
+        for item in something:
+            org = Organization()
+            org.Name = item.find('a').text
+            strong_elements = item.find_all('strong', class_='autor')
+            for strong in strong_elements:
+                next_sibling = strong.next_sibling
+                if next_sibling and next_sibling.string:
+                    info = next_sibling.string.strip()
+                    if str(strong).__contains__('Местоположение'):
+                        org.Address = info
+                    elif str(strong).__contains__('Адрес'):
+                        org.Address = info
+                    elif str(strong).__contains__('Тип'):
+                        org.Type = info
+                    elif str(strong).__contains__('Директор'):
+                        org.Head = info
+                    elif str(strong).__contains__('Телефон'):
+                        org.Number = info
+                    print(info)
+            organizations.append(org)
+        return organizations
 
 crawller = Crawller()
 crawller.start()
