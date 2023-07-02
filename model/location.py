@@ -31,3 +31,6 @@ class Location(Base):
         self.street = street
         self.house = house
         self.flat = flat
+
+    def __str__(self):
+        return f"Улица: {self.street}\nДом: {self.house}\nРайон: {self.district}"

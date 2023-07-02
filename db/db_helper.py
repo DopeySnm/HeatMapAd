@@ -55,7 +55,7 @@ class DBAd:
                 get_old_ad.price = new_ad.price
                 get_old_ad.location = new_ad.location
                 get_old_ad.description = new_ad.description
-                get_old_ad.linc = new_ad.linc
+                get_old_ad.link = new_ad.link
                 get_old_ad.title = new_ad.title
                 get_old_ad.data_download = new_ad.data_download
                 get_old_ad.magnitude = new_ad.magnitude

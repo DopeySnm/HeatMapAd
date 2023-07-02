@@ -21,7 +21,7 @@ class HeatMapWork:
 
     def get_html_description(self, re: RealEstate):
         if isinstance(re, Ad):
-            result_description = "Объявление: " + re.title + "<br>" + "Цена: " + re.price.__str__() + "<br>" + "Ссылка: " + re.linc
+            result_description = "Объявление: " + re.title + "<br>" + "Цена: " + re.price.__str__() + "<br>" + "Ссылка: " + re.link
             if re.description != None:
                 for description in re.description.args:
                     result_description.join(description.__str__())

@@ -10,7 +10,7 @@ class Ad(RealEstate, Base):
 
     id = Column(Integer, primary_key=True)
     price = Column(Float)
-    linc = Column(String)
+    link = Column(String)
     title = Column(String)
     magnitude = Column(Float)
     data_download = Column(Date)
@@ -18,15 +18,17 @@ class Ad(RealEstate, Base):
     description = Column(Integer, ForeignKey('description.id'))
 
     def __init__(self,
-                 price: float,
-                 linc: str,
                  title: str,
+                 price: float,
+                 link: str,
                  location: Location,
                  magnitude: float,
                  data_download: date,
                  description: Description = None):
         super().__init__(title, location, data_download)
         self.price = price
-        self.linc = linc
+        self.link = link
         self.magnitude = magnitude
         self.description = description
+    def __str__(self):
+        return f"Заголовок: {self.title}\nЦена: {self.price}\nСсылка на объявление: {self.link}\nЛокация: {self.location}Площадь: {self.magnitude}\nДата загрузки{self.data_download}\nОписание: {self.discription}"

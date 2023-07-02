@@ -18,6 +18,5 @@ class Infrastructure(RealEstate, Base):
                  title: str,
                  location: Location,
                  data_download: date):
-
         super().__init__(title, location, data_download)
         self.type = type
