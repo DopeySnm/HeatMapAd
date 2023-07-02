@@ -1,21 +1,22 @@
-class Ad:
+from datetime import date
+
+from model_description import Description
+from model_location import Location
+from realEstate import RealEstate
+
+class Ad(RealEstate):
     def __init__(self,
                  title: str,
                  price: float,
-                 discription: str,
-                 type: str,
-                 area: float,
                  link: str,
-                 city: str,
-                 address: str):
-        self.title = title
+                 location: Location,
+                 magnitude: float,
+                 data_download: date,
+                 description: Description = None):
+        super().__init__(title, location, data_download)
         self.price = price
-        self.discription = discription
-        self.type = type
-        self.area = area
-        self.link = link
-        self.city = city
-        self.address = address
-
+        self.linc = link
+        self.magnitude = magnitude
+        self.description = description
     def __str__(self):
-        return f"Заголовок: {self.title}\nЦена: {self.price}\nОписание: {self.discription}\nТип жилья: {self.type}\nПлощадь: {self.area}\nСсылка на объявление: {self.link}\nГород: {self.city}\nАдрес: {self.address}"
+        return f"Заголовок: {self.title}\nЦена: {self.price}\nСсылка на объявление: {self.link}\nЛокация: {self.location}Площадь: {self.magnitude}\nДата загрузки{self.data_download}\nОписание: {self.discription}"
