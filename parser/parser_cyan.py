@@ -28,14 +28,11 @@ class Parser_cyan(Interface):
         discription = soup.find("span",class_="a10a3f92e9--color_black_100--kPHhJ a10a3f92e9--lineHeight_6u--A1GMI a10a3f92e9--fontWeight_normal--P9Ylg a10a3f92e9--fontSize_16px--RB9YW a10a3f92e9--display_block--pDAEx a10a3f92e9--text--g9xAG a10a3f92e9--text_letterSpacing__0--mdnqq a10a3f92e9--text_whiteSpace__pre-wrap--scZwb")
         return discription
 
-    def select_type(self):
     @property
     def select_link(self):
         link= soup.find("meta", property = "og:url")
         return link
 
-    @property
-    def select_address(self):
     def select_values_under_main_name(self, soup: BeautifulSoup, tag: str, value_class: str) -> str or None:
         res = soup.find(tag, class_=value_class)
         if res is not None:
