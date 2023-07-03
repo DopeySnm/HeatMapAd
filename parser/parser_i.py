@@ -1,19 +1,36 @@
 from model.ad import Ad
+from model.description import Description
+from model.location import Location
 
 
 class Interface:
     def select_info_about_apartment(self, html_page) -> Ad:
         return Ad()
+
+    def select_info_discription(self, html_page) -> Description:
+        return Description()
+
     def select_title(self):
+        pass
 
     def select_price(self):
+        pass
 
-    def select_discription(self):
-
-    def select_type(self):
 
     def select_link(self):
+        pass
 
-    def select_address(self):
-    def select_values_under_main_name():
-             return None
+    def select_magnitude(self):
+        pass
+
+    def select_description_main(self):
+        pass
+
+    def select_data_download(self):
+        pass
+
+    def select_info_about_location(self, html_page) -> Location:
+        return Location()
+
+    def select_values(self):
+         return None
