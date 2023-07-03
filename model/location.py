@@ -6,7 +6,7 @@ class Location(Base):
     __tablename__ = 'location'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    coordinate_x = Column(Float)
+    coordinate_x = Column(Float,)
     coordinate_y = Column(Float)
     city = Column(String)
     district = Column(String)

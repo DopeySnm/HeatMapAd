@@ -6,10 +6,9 @@ from model.users.history import History
 from model.users.tokens import Tokens
 from model.users.user import User
 
-
 class DBHelperUsers:
     def __init__(self):
-        sqlite_database = "sqlite:///users.db"
+        sqlite_database = "sqlite:///../db/db_users/users.db"
         self.engine = create_engine(sqlite_database)#, echo=True)
 
     def create_db(self):

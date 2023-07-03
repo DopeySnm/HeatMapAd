@@ -22,9 +22,6 @@ class HeatMapWork:
     def get_html_description(self, re: RealEstate):
         if isinstance(re, Ad):
             result_description = "Объявление: " + re.title + "<br>" + "Цена: " + re.price.__str__() + "<br>" + "Ссылка: " + re.link
-            if re.description != None:
-                for description in re.description.args:
-                    result_description.join(description.__str__())
 
         if isinstance(re, Infrastructure):
             result_description = "Тип: " + re.type + "<br>" + "Название: " + re.title
@@ -58,6 +55,10 @@ class HeatMapWork:
                               popup=folium.Popup(html=self.get_html_description(infrastructure)),  # инф при нажатии
                               tooltip=folium.Tooltip(text=self.get_html_description(infrastructure)),  # инф при наведении
                               ).add_to(self.my_map))
+
+    def show_map_in_browser(self):
+        self.get_html_map()
+        self.my_map.show_in_browser()
 
     def get_html_map(self):
         self.my_map = folium.Map(location=(self.start_location.coordinate_x, self.start_location.coordinate_y),
@@ -101,7 +102,7 @@ def test():
             title="квартира",
             magnitude=0.5,
             price=1000,
-            linc="Сслыка",
+            link="Сслыка",
             data_download=date.today()))
 
     list_ad.append(
@@ -110,7 +111,7 @@ def test():
             title="квартира1",
             magnitude=0.5,
             price=1000,
-            linc="Сслыка",
+            link="Сслыка",
             data_download=date.today()))
 
     hp.set_ad_list(list_ad)
@@ -118,5 +119,3 @@ def test():
     map_html = hp.get_html_map()
 
     hp.my_map.show_in_browser()
-
-test()
