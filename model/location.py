@@ -5,16 +5,17 @@ from db.base import Base
 class Location(Base):
     __tablename__ = 'location'
 
-    id = Column(Integer, primary_key=True)
-    coordinate_x = Column(Float)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    coordinate_x = Column(Float,)
     coordinate_y = Column(Float)
     city = Column(String)
     district = Column(String)
     street = Column(String)
     house = Column(String)
     flat = Column(String)
-    ad = relationship('Ad')
-    infrastructure = relationship('Infrastructure')
+
+    ad = relationship('Ad', back_populates="location")
+    infrastructure = relationship('Infrastructure', back_populates="location")
 
     def __init__(self,
                 coordinate_x: float,
