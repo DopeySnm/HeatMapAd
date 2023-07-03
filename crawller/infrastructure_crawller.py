@@ -73,7 +73,7 @@ class Parser:
         """
         geolocator = Photon()
         location = geolocator.geocode(address)
-        time.sleep(1)
+        time.sleep(2)
         print(location.latitude, location.longitude)
         return (location.latitude, location.longitude)
 
@@ -82,11 +82,21 @@ class Parser:
         if new_addr[0] == 454136:
             e = 11
         result: str
+        #if contains city name
         if new_addr.__len__() == 4:
+            if (new_addr[2].__contains__('пр-т')): new_addr[2].replace('пр-т', 'проспект')
             result = 'Челябинск' + ',' + new_addr[2] + ',' + new_addr[3]
-        else:
+        #if not contains city name
+        elif new_addr.__len__() == 3:
             if (new_addr[1].__contains__('пр-т')): new_addr[1].replace('пр-т', 'проспект')
             result = 'Челябинск' + ',' + new_addr[1] + ',' + new_addr[2]
+        #someone is real dumb
+        else:
+            if (new_addr[1].__contains__('Челябинск')):
+                if (new_addr[1].__contains__('пр-т')): new_addr[1].replace('пр-т', 'проспект')
+                result = 'Челябинск' + ',' + new_addr[2] + ',' + new_addr[3]
+            else:
+                result = 'Челябинск' + ',' + new_addr[1] + ',' + new_addr[2]
         return result
     def parse_data(self, something):
         organizations = []
