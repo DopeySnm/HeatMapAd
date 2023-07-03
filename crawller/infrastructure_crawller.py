@@ -1,17 +1,32 @@
+import time
 import traceback
-
+from geopy.geocoders import Photon
 import requests
 from bs4 import BeautifulSoup
 
-class Organization:
-    Name: str
-    Address: str
-    Type: str
-    Head: str
-    Phone: str
-    Number: str
-    Special: str
+class Location:
+    coordinate_x: float
+    coordinate_y: float
+    city: str
+    district: str
+    street: str
+    house: str
 
+    def __init__(self, tuple, distr, city, street, house):
+        self.coordinate_x = tuple[0]
+        self.coordinate_y = tuple[1]
+        self.district = distr
+        self.city = city
+        self.street = street
+        self.house = house
+class Organization:
+    Title: str
+    Type: str
+    Loc: Location
+    def __init__(self, title, type, loc: Location):
+        self.Title = title
+        self.Type = type
+        self.Loc = loc
 class Crawller:
     def start(self):
         a = requests.get('https://chel-edu.ru/organisations/')
@@ -19,17 +34,18 @@ class Crawller:
         bs = BeautifulSoup(html, 'xml')
         regions = []
         objects = []
+        parser = Parser()
         #looking for regions of city and appending links on them
         for region in bs.find('div', class_='fa_categories').findChildren('a'):
             regions.append(region['href'])
         for r in regions:
             n = r.split('?')
             l = n[0] + '?col=' + str(0) + '&' + n[1]
-            objects.extend(self.extract_objects_from_region(r))
+            objects.extend(parser.extract_objects_from_region(r))
         print(len(objects))
         for obj in objects:
             print(obj)
-
+class Parser:
     def extract_objects_from_region(self, link: str):
         objects = []
         e = 0
@@ -48,28 +64,56 @@ class Crawller:
             print(traceback.format_exc())
         return objects
 
+
+    def get_coordinate(address: str) -> tuple:
+        """
+        В функцию постпает строка вида "Город, улица, дом", недопустима передача строки "Город, район, улица, дом" или "Город, район, жилой комплекс"
+        :param adress: строка вида "Город, улица, дом"
+        :return: tuple вида (долгота, широта)
+        """
+        geolocator = Photon()
+        location = geolocator.geocode(address)
+        time.sleep(1)
+        print(location.latitude, location.longitude)
+        return (location.latitude, location.longitude)
+
+    def parse_address(self, addr):
+        new_addr = addr.split(',')
+        if new_addr[0] == 454136:
+            e = 11
+        result: str
+        if new_addr.__len__() == 4:
+            result = 'Челябинск' + ',' + new_addr[2] + ',' + new_addr[3]
+        else:
+            if (new_addr[1].__contains__('пр-т')): new_addr[1].replace('пр-т', 'проспект')
+            result = 'Челябинск' + ',' + new_addr[1] + ',' + new_addr[2]
+        return result
     def parse_data(self, something):
         organizations = []
         for item in something:
-            org = Organization()
-            org.Name = item.find('a').text
+            title: str
+            addr: str
+            district: str
+            orgtype: str
+            title = item.find('a').text
             strong_elements = item.find_all('strong', class_='autor')
             for strong in strong_elements:
                 next_sibling = strong.next_sibling
                 if next_sibling and next_sibling.string:
                     info = next_sibling.string.strip()
                     if str(strong).__contains__('Местоположение'):
-                        org.Address = info
+                        district = info
                     elif str(strong).__contains__('Адрес'):
-                        org.Address = info
+                        addr = info
                     elif str(strong).__contains__('Тип'):
-                        org.Type = info
-                    elif str(strong).__contains__('Директор'):
-                        org.Head = info
-                    elif str(strong).__contains__('Телефон'):
-                        org.Number = info
+                        orgtype = info
                     print(info)
-            organizations.append(org)
+            result = Parser().parse_address(addr)
+            city = result[0]
+            street = result[1]
+            house = result[2]
+
+            organizations.append(Organization(title, orgtype, Location(Parser.get_coordinate(result), district, city, street, house)))
         return organizations
 
 crawller = Crawller()
