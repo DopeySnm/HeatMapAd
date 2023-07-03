@@ -4,7 +4,7 @@ from model.ad import Ad
 from model.infrastructure import Infrastructure
 from model.location import Location
 from model.real_estate import RealEstate
-from datetime import date, datetime
+from datetime import date
 
 
 class HeatMapWork:

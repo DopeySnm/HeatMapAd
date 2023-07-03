@@ -1,4 +1,7 @@
 from datetime import date
+
+from sqlalchemy.orm import relationship
+
 from db.base import Base
 from model.location import Location
 from model.real_estate import RealEstate
@@ -11,7 +14,9 @@ class Infrastructure(RealEstate, Base):
     title = Column(String)
     type = Column(String)
     data_download = Column(Date)
-    location = Column(Integer, ForeignKey('location.id'))
+    location_id = Column(Integer, ForeignKey('location.id'))
+
+    location = relationship('Location', back_populates="infrastructure")
 
     def __init__(self,
                  type: str,

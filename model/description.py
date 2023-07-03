@@ -14,7 +14,8 @@ class Description(Base):
     housing_type = Column(String)
     bathroom = Column(String)
     repair = Column(String)
-    ad = relationship('Ad')
+
+    ad = relationship('Ad', back_populates="description")
     def __init__(self,
                  main_description: str,
                  total_area: float or None,

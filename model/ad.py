@@ -2,6 +2,7 @@ from datetime import date
 from db.base import Base
 from model.description import Description
 from model.location import Location
+from sqlalchemy.orm import relationship
 from model.real_estate import RealEstate
 from sqlalchemy import Column, Integer, String,  ForeignKey, Float, Date
 
@@ -14,8 +15,11 @@ class Ad(RealEstate, Base):
     title = Column(String)
     magnitude = Column(Float)
     data_download = Column(Date)
-    location = Column(Integer, ForeignKey('location.id'))
-    description = Column(Integer, ForeignKey('description.id'))
+    location_id = Column(Integer, ForeignKey('location.id'))
+    description_id = Column(Integer, ForeignKey('description.id'))
+
+    location = relationship('Location', back_populates="ad")
+    description = relationship('Description', back_populates="ad")
 
     def __init__(self,
                  title: str,
