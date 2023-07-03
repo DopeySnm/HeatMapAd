@@ -18,13 +18,13 @@ class Description(Base):
     ad = relationship('Ad', back_populates="description")
     def __init__(self,
                  main_description: str,
-                 total_area: float or None,
-                 floor: int,
-                 year_built: int or None,
-                 living_area: str or None,
-                 housing_type: str or None,
-                 bathroom: str or None,
-                 repair: str or None):
+                 total_area: float = None,
+                 floor: int = None,
+                 living_area: str = None,
+                 housing_type: str = None,
+                 bathroom: str = None,
+                 repair: str = None,
+                 year_built: int = None):
         self.main_description = main_description
         self.total_area = total_area
         self.floor = floor
