@@ -1,7 +1,6 @@
 import dateutil.utils
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
-
 from db.base import Base
 from model.location import Location
 from model.description import Description
@@ -44,10 +43,11 @@ class DBAd:
             db.add(ad)
             db.commit()
 
-    def get_ads_by_city(self, city: int):
+    def get_ads_by_city(self, city: str):
         with Session(autoflush=False, bind=self.engine) as db:
-            result = db.query(Ad).filter(Ad.id == city).first()
-            return result
+            result_ads = db.query(Ad).join(Location).filter(Location.city == city)
+            db.close()
+        return result_ads
 
     def get_ad_by_id(self, id: int):
         with Session(autoflush=False, bind=self.engine) as db:
@@ -56,7 +56,7 @@ class DBAd:
 
     def update(self, old_ad: Ad, new_ad: Ad):
         with Session(autoflush=False, bind=self.engine) as db:
-            get_old_ad = db.query(Ad).filter(Ad.id == old_ad.id).first()
+            get_old_ad = db.query(Ad).filter(Ad.location_id == old_ad.id).first()
             if (get_old_ad != None):
                 get_old_ad.price = new_ad.price
                 get_old_ad.location = new_ad.location
@@ -136,13 +136,14 @@ def test():
     description = Description(main_description="описание", total_area=10, floor=2000, year_built=2000, living_area="хз",
                               housing_type="да", bathroom="нет", repair="хз")
 
-    ad = Ad(price=50000, link="Ссылка", title="Квартира 1", magnitude=0.5, data_download=dateutil.utils.today(),
+    ad = Ad(price=50000, link="Ссылка", title="Квартира 2", magnitude=0.5, data_download=dateutil.utils.today(),
             location=location, description=description)
 
     DBAd().insert(ad)
 
 
 
-ads = DBAd().get_ads_by_city(1)
+result = DBAd().get_ads_by_city("Челябинск")
 
-print(ads[0])
+for i in result:
+    print(i.title + i.location.city)

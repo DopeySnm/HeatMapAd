@@ -24,7 +24,7 @@ class DBUsers:
             db.add(user)
             db.commit()
 
-    def get_location_by_name(self, name: str):
+    def get_user_by_name(self, name: str):
         with Session(autoflush=False, bind=self.engine) as db:
             result = db.query(User).filter(User.user_name == name).first()
             return result
