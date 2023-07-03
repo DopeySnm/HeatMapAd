@@ -19,11 +19,11 @@ class Description(Base):
                  main_description: str,
                  total_area: float or None,
                  floor: int,
-                 year_built: int,
-                 living_area: str,
-                 housing_type: str,
-                 bathroom: str,
-                 repair: str):
+                 year_built: int or None,
+                 living_area: str or None,
+                 housing_type: str or None,
+                 bathroom: str or None,
+                 repair: str or None):
         self.main_description = main_description
         self.total_area = total_area
         self.floor = floor
