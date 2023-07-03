@@ -15,11 +15,19 @@ class DBHelper:
     def create_db(self):
         Base.metadata.create_all(bind=self.engine)
 
-    def insert_city(self, city: str):
-        location = Location(coordinate_x=55.154, coordinate_y=61.4291, city=city, street="center")
+    #55.154, 61.4291
+
+    def insert_city(self, coordinate_x: float, coordinate_y: float, city: str):
+        location = Location(coordinate_x=coordinate_x, coordinate_y=coordinate_y, city=city, street="center")
         with Session(autoflush=False, bind=self.engine) as db:
             db.add(location)
             db.commit()
+
+    def get_city_center(self, city: str):
+        with Session(autoflush=False, bind=self.engine) as db:
+            result_ads = db.query(Location).filter(Location.street == "center" and Location.city == city).first()
+            db.close()
+        return result_ads
 
     def insert(self, ad: Ad = None, infrastructure: Infrastructure = None):
         if ad != None and infrastructure != None:
@@ -37,12 +45,6 @@ class DBHelper:
                 db.commit()
         else:
             pass
-
-    def get_city_center(self, city: str):
-        with Session(autoflush=False, bind=self.engine) as db:
-            result_ads = db.query(Location).filter(Location.street == "center" and Location.city == city).first()
-            db.close()
-        return result_ads
 
     def get_ads_by_city(self, city: str):
         with Session(autoflush=False, bind=self.engine) as db:
