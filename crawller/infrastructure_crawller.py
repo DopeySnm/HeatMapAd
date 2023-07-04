@@ -3,30 +3,10 @@ import traceback
 from geopy.geocoders import Photon
 import requests
 from bs4 import BeautifulSoup
+from model.infrastructure import Infrastructure
+from model.location import Location
 
-class Location:
-    coordinate_x: float
-    coordinate_y: float
-    city: str
-    district: str
-    street: str
-    house: str
 
-    def __init__(self, tuple, distr, city, street, house):
-        self.coordinate_x = tuple[0]
-        self.coordinate_y = tuple[1]
-        self.district = distr
-        self.city = city
-        self.street = street
-        self.house = house
-class Organization:
-    Title: str
-    Type: str
-    Loc: Location
-    def __init__(self, title, type, loc: Location):
-        self.Title = title
-        self.Type = type
-        self.Loc = loc
 class Crawller:
     def start(self):
         a = requests.get('https://chel-edu.ru/organisations/')
@@ -88,13 +68,10 @@ class Parser:
             if (new_addr[1].__contains__('пр-т')): new_addr[1].replace('пр-т', 'проспект')
             result = 'Челябинск' + ',' + new_addr[1] + ',' + new_addr[2]
         return result
-    def parse_data(self, something):
+
+    def parse_data(self, data):
         organizations = []
-        for item in something:
-            title: str
-            addr: str
-            district: str
-            orgtype: str
+        for item in data:
             title = item.find('a').text
             strong_elements = item.find_all('strong', class_='autor')
             for strong in strong_elements:
@@ -106,14 +83,15 @@ class Parser:
                     elif str(strong).__contains__('Адрес'):
                         addr = info
                     elif str(strong).__contains__('Тип'):
-                        orgtype = info
+                        org_type = info
                     print(info)
             result = Parser().parse_address(addr)
             city = result[0]
             street = result[1]
             house = result[2]
-
-            organizations.append(Organization(title, orgtype, Location(Parser.get_coordinate(result), district, city, street, house)))
+            location = Location(Parser.get_coordinate(result), district, city, street, house)
+            oranization = Infrastructure(title=title, type=org_type, location=location)
+            organizations.append(oranization)
         return organizations
 
 crawller = Crawller()
