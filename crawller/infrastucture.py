@@ -9,10 +9,10 @@ from crawller.base import Crawller
 
 
 class CrawllerInfrastructure(Crawller):
-    def init(self):
+    def __init__(self):
         self.useragent = UserAgent()
         self.options = webdriver.ChromeOptions()
-        # self.options.add_argument('--headless=new')
+        self.options.add_argument('--headless=new')
         self.service = Service(r"/chromedriver/chromedriver.exe")
         self.parser = ParserInfrastucture()
         self.driver = webdriver.Chrome(service=self.service, options=self.options)
@@ -37,14 +37,16 @@ class CrawllerInfrastructure(Crawller):
 
     def next_page(self):
         result = self.url.split('/')
-        if (self.url == self.base_url): self.url = self.url + '2/'
-        else: self.url = self.base_url + str(int(self.url.split('/')[-2]) + 1) + '/'
+        if (self.url == self.base_url):
+            self.url = self.url + '2/'
+        else:
+            self.url = self.base_url + str(int(self.url.split('/')[-2]) + 1) + '/'
 
     def start(self):
         try:
             lst_orgs = []
             while True:
-                # self.add_useragent()
+                self.add_useragent()
                 self.driver.get(self.url)
                 result = self.driver.page_source
                 if 'Ошибка 404' in result:
@@ -53,9 +55,9 @@ class CrawllerInfrastructure(Crawller):
 
                 boxes = self.get_boxes_ads()
                 for box in boxes:
-                    org_built = self.parser.select_ad(box.get_attribute("outerHTML"))
+                    org_built = self.parser.select_infrastucture(box.get_attribute("outerHTML"))
                     lst_orgs.append(org_built)
-                    break
+                    # break
                 break
                 self.next_page()
         except Exception:

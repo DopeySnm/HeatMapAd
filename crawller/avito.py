@@ -12,7 +12,7 @@ class CrawllerAvito(Crawller):
     def __init__(self):
         self.useragent = UserAgent()
         self.options = webdriver.ChromeOptions()
-        # self.options.add_argument('--headless=new')
+        self.options.add_argument('--headless=new')
         self.service = Service(r"/chromedriver/chromedriver.exe")
         self.driver = webdriver.Chrome(service=self.service, options=self.options)
         self.parser = ParserAvito()

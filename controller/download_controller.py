@@ -25,11 +25,11 @@ class DownloadController:
 
     def start_parse(self):
         try:
-            # lst_ads_avito = self.crawller_avito.start()
-            # self.list_ads += lst_ads_avito
+            lst_ads_avito = self.crawller_avito.start()
+            self.list_ads += lst_ads_avito
 
-            # lst_ads_cian = self.crawller_cian.start()
-            # self.list_ads += lst_ads_cian
+            lst_ads_cian = self.crawller_cian.start()
+            self.list_ads += lst_ads_cian
 
             lst_orgs = self.crawller_infrastructure.start()
             self.list_infrastructures += lst_orgs
