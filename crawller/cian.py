@@ -8,7 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from parsers.cian import ParserCian
 
-class Crawller:
+class CrawllerCian:
     def __init__(self):
         self.useragent = UserAgent()
         self.options = webdriver.ChromeOptions()
@@ -69,6 +69,7 @@ class Crawller:
 
     def start(self):
         try:
+            lst_ads = []
             while True:
                 self.add_useragent()
                 self.driver.get(self.url)
@@ -78,20 +79,22 @@ class Crawller:
                 for link in links_ads.split('\n'):
                     self.forward_page(link)
                     ad = self.parser.select_ad(self.driver.page_source)
-                    print(ad)
+                    lst_ads.append(ad)
+                    # break
+                break
                 self.next_page()
-
-                # print("*"*40)
-                # break
         except Exception:
             print(traceback.format_exc())
         finally:
             print("Работа Краулера Циан окончена")
             self.exit()
+            return lst_ads
 
     def exit(self):
         self.driver.close()
         self.driver.quit()
 
-ctrl = Crawller()
-html = ctrl.start()
+
+if __name__ == "__main__":
+    ctrl = CrawllerCian()
+    html = ctrl.start()

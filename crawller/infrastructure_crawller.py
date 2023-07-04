@@ -3,8 +3,8 @@ import traceback
 from geopy.geocoders import Photon
 import requests
 from bs4 import BeautifulSoup
-from model.infrastructure import Infrastructure
-from model.location import Location
+from models.infrastructure import Infrastructure
+from models.location import Location
 
 
 class Crawller:

@@ -1,10 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from db.base import Base
-from model.users.favourites import Favourites
-from model.users.history import History
-from model.users.tokens import Tokens
-from model.users.user import User
+from models.users.favourites import Favourites
+from models.users.history import History
+from models.users.tokens import Tokens
+from models.users.user import User
 
 class DBHelperUsers:
     def __init__(self):

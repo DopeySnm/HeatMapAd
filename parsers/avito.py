@@ -1,9 +1,10 @@
 from datetime import datetime
 from bs4 import BeautifulSoup
-from model.ad import Ad
-from model.location import Location
+from models.ad import Ad
+from models.location import Location
 from parsers.base import Parser
-from model.description import Description
+from models.description import Description
+import re
 
 
 class ParserAvito(Parser):
@@ -14,9 +15,9 @@ class ParserAvito(Parser):
         link = self.select_link(soup)
         location = self.select_location(soup)
         magnitude = None
-        data_download = str(datetime.now().date())
+        date_download = datetime.now().date()
         description = self.select_description(soup)
-        return Ad(title=title, price=price, link=link, location=location, magnitude=magnitude, data_download=data_download, description=description)
+        return Ad(title=title, price=price, link=link, location=location, magnitude=magnitude, date_download=date_download, description=description)
 
 
     def select_title(self, soup):
@@ -28,9 +29,7 @@ class ParserAvito(Parser):
         price = self.check_value(price)
 
         if price:
-            price = price.split("&nbsp;")
-            price = "".join(price)
-            price = price[:-1:]
+            price = re.sub(r"\D", "", price)
         return price
 
     def select_description(self, soup):
@@ -44,15 +43,17 @@ class ParserAvito(Parser):
         return link
 
     def select_location(self, soup) -> Location:
-        adress = self.select_adress(soup)
+        full_address = self.select_adress(soup)
         coordinate_x = None
         coordinate_y = None
-        city = None
-        district = None
-        street = None
-        house = None
-        flat = None
-        return adress
+        city = "Челябинск"
+        if full_address:
+            street = full_address.split(", ")[0]
+            house = full_address.split(", ")[-1]
+        else:
+            street = None
+            house = None
+        return Location(coordinate_x=coordinate_x, coordinate_y=coordinate_y, full_address=full_address, city=city, street=street, house=house)
 
     def select_adress(self, soup):
         adress = soup.find("p", class_="styles-module-root-_KFFt styles-module-size_s-awPvv styles-module-size_s-_P6ZA stylesMarningNormal-module-root-OSCNq stylesMarningNormal-module-paragraph-s-_c6vD")

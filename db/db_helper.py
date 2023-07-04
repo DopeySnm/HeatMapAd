@@ -2,10 +2,10 @@ import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from db.base import Base
-from model.description import Description
-from model.location import Location
-from model.ad import Ad
-from model.infrastructure import Infrastructure
+from models.description import Description
+from models.location import Location
+from models.ad import Ad
+from models.infrastructure import Infrastructure
 
 class DBHelper:
     def __init__(self):

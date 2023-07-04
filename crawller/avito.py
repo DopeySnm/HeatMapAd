@@ -51,18 +51,22 @@ class CrawllerAvito(Crawller):
                 boxes = self.get_boxes_ads()
                 for box in boxes:
                     ad = self.parser.select_ad(box.get_attribute("outerHTML"))
-                    print(ad)
                     lst_ads.append(ad)
+                    # break
+                # break
                 self.next_page()
         except Exception:
             print(traceback.format_exc())
         finally:
             print("Работа Краулера Авито окончена")
             self.exit()
+            return lst_ads
 
     def get_boxes_ads(self):
         boxes = self.driver.find_elements("css selector", ".iva-item-root-_lk9K.photo-slider-slider-S15A_.iva-item-list-rfgcH.iva-item-redesign-rop6P.iva-item-responsive-_lbhG.items-item-My3ih.items-listItem-Gd1jN.js-catalog-item-enum")
         return boxes
 
-ctrl = CrawllerAvito()
-ctrl.start()
+
+if __name__ == "__main__":
+    ctrl = CrawllerAvito()
+    ctrl.start()
