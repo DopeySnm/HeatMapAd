@@ -6,7 +6,7 @@ from models.location import Location
 from parsers.base import Parser
 import re
 import unicodedata
-import requests
+
 
 class ParserCian(Parser):
     def select_ad(self, html_page) -> Ad:
@@ -54,23 +54,6 @@ class ParserCian(Parser):
         coordinate_x = coordinates[0]
         coordinate_y = coordinates[1]
         return Location(coordinate_x=coordinate_x, coordinate_y=coordinate_y, full_address=full_address, city=city, street=street, house=house)
-
-    def get_coordinates(self, address):
-        base_url = "https://geocode-maps.yandex.ru/1.x"
-        response = requests.get(base_url, params={
-            "geocode": address,
-            "apikey": "9cfd6268-5f4f-4982-b912-676c37ec09dd",
-            "format": "json",
-        })
-        response.raise_for_status()
-        found_places = response.json()['response']['GeoObjectCollection']['featureMember']
-
-        if not found_places:
-            return None
-
-        most_relevant = found_places[0]
-        lon, lat = most_relevant['GeoObject']['Point']['pos'].split(" ")
-        return lon, lat
 
     def select_adress(self,soup):
         box_adress = soup.find("div", class_="a10a3f92e9--header-information--w7fS9")

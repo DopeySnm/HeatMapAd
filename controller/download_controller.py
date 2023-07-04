@@ -1,6 +1,7 @@
 from db.db_helper import DBHelper
 from crawller.avito import CrawllerAvito
 from crawller.cian import CrawllerCian
+from crawller.infrastucture import CrawllerInfrastructure
 
 class DownloadController:
     def __init__(self):
@@ -8,6 +9,7 @@ class DownloadController:
         self.list_infrastructures = []
         self.crawller_cian = CrawllerCian()
         self.crawller_avito = CrawllerAvito()
+        self.crawller_infrastructure = CrawllerInfrastructure()
 
         self.create_database()
 
@@ -26,8 +28,11 @@ class DownloadController:
             # lst_ads_avito = self.crawller_avito.start()
             # self.list_ads += lst_ads_avito
 
-            lst_ads_cian = self.crawller_cian.start()
-            self.list_ads += lst_ads_cian
+            # lst_ads_cian = self.crawller_cian.start()
+            # self.list_ads += lst_ads_cian
+
+            lst_orgs = self.crawller_infrastructure.start()
+            self.list_infrastructures += lst_orgs
         except Exception as ex:
             print(ex)
         finally:
