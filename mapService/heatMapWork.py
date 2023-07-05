@@ -6,7 +6,6 @@ from model.location import Location
 from model.real_estate import RealEstate
 from datetime import date
 
-
 class HeatMapWork:
     def __init__(self, start_location: Location):
         self.start_location = start_location
