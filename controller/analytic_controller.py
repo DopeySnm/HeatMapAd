@@ -6,8 +6,28 @@ class AnalyticController:
         if city == "Челябинск":
             return True
 
-    def get_img_heat_map(self, city: str, min_price: int, max_price: int):
-        return "Вывод: ", city, min_price, max_price
+    def get_list_city(self):
+        list_city = []
+        for location in DBHelper().get_list_city():
+            list_city.append(location.city)
+        return list_city
+
+    def get_img_heat_map(self,
+                         city: str,
+                         min_price: int,
+                         max_price: int,
+                         infrastructure_objects: bool,
+                         type_map: str,
+                         resale: bool,
+                         new_building: bool,):
+        return "Вывод:", \
+            "Город", city, \
+            "Минимальная цена", min_price, \
+            "Максимальная цена", max_price, \
+            "Объекты инраструктуры", infrastructure_objects, \
+            "Тип карты", type_map, \
+            "Вторичное жильё", resale, \
+            "Новостройка", new_building,
 
     def show_map_in_browser(self, city: str):
         ads = DBHelper().get_ads_by_city(city)

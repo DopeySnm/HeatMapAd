@@ -23,6 +23,12 @@ class DBHelper:
             db.add(location)
             db.commit()
 
+    def get_list_city(self):
+        with Session(autoflush=False, bind=self.engine) as db:
+            result_ads = db.query(Location).filter(Location.street == "center").first()
+            db.close()
+        return result_ads
+
     def get_city_center(self, city: str):
         with Session(autoflush=False, bind=self.engine) as db:
             result_ads = db.query(Location).filter(Location.street == "center" and Location.city == city).first()
