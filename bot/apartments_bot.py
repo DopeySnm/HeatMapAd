@@ -9,8 +9,10 @@ from aiogram_dialog.widgets.text import Format, Const
 from bot.dialog_s_g import DialogSG
 from bot.dialogs.admin_dialog_ import admin_dialog
 from bot.dialogs.filter_dialog_ import filter_dialog
+from bot.dialogs.filter_num_floor_dialog_ import main_filter_num_floor
+from bot.dialogs.filter_price_dialog_ import main_filter_price
+from bot.dialogs.filter_total_area_dialog_ import main_filter_total_area
 from bot.dialogs.menu_city_dialog_ import menu_city_dialog
-from controller.analytic_controller import AnalyticController
 
 storage = MemoryStorage()
 bot = Bot(token="6351864281:AAGnD3Ij4UyF-oHQxScUDjc1iaW8tFueHzQ")
@@ -21,7 +23,10 @@ registry = DialogRegistry(dp)
 main_dialog = Dialog(
     menu_city_dialog,
     admin_dialog,
-    filter_dialog
+    filter_dialog,
+    main_filter_total_area,
+    main_filter_price,
+    main_filter_num_floor,
 )
 
 registry.register(main_dialog)
@@ -38,7 +43,11 @@ async def start(m: Message, dialog_manager: DialogManager):
                                      "infrastructure_objects": True,
                                      "type_map": "HeatMap",
                                      "new_building": True,
-                                     "resale": True},
+                                     "resale": True,
+                                     "min_floor": 1,
+                                     "max_floor": 10,
+                                     "min_total_area": 20,
+                                     "max_total_area": 50},
                                mode=StartMode.RESET_STACK,
                                show_mode=ShowMode.EDIT)
     # if m.from_user.id in admin_id_list:

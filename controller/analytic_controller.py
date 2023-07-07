@@ -19,7 +19,11 @@ class AnalyticController:
                          infrastructure_objects: bool,
                          type_map: str,
                          resale: bool,
-                         new_building: bool,):
+                         new_building: bool,
+                         min_floor: int,
+                         max_floor: int,
+                         min_total_area: float,
+                         max_total_area: float):
         return "Вывод:", \
             "Город", city, \
             "Минимальная цена", min_price, \
@@ -27,7 +31,11 @@ class AnalyticController:
             "Объекты инраструктуры", infrastructure_objects, \
             "Тип карты", type_map, \
             "Вторичное жильё", resale, \
-            "Новостройка", new_building,
+            "Новостройка", new_building, \
+            "Минимальный этаж", min_floor, \
+            "Максимальный этаж", max_floor, \
+            "Минимальная общая площадь кв/м", min_total_area, \
+            "Максимальная общая площадь кв/м", max_total_area
 
     def show_map_in_browser(self, city: str):
         ads = DBHelper().get_ads_by_city(city)
