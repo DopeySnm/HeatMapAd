@@ -14,8 +14,7 @@ from bot.dialogs.filter_price_dialog_ import main_filter_price
 from bot.dialogs.filter_total_area_dialog_ import main_filter_total_area
 from bot.dialogs.filter_type_map_dialog_ import filter_analytical_map
 from bot.dialogs.menu_city_dialog_ import menu_city_dialog
-from controller.user_controller import UserController
-from db.db_users.db_users_helper import DBUsers
+
 
 storage = MemoryStorage()
 bot = Bot(token="6351864281:AAGnD3Ij4UyF-oHQxScUDjc1iaW8tFueHzQ")
@@ -32,10 +31,6 @@ main_dialog = Dialog(
     filter_analytical_map
 )
 registry.register(main_dialog)
-
-
-
-
 
 @dp.message_handler(commands=['start'])
 async def start(m: Message, dialog_manager: DialogManager):
