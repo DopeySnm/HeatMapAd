@@ -4,8 +4,8 @@ from shlex import join
 from bs4 import BeautifulSoup
 
 from main import soup
-from model.ad import Ad
-from model.location import Location
+from models.ad import Ad
+from models.location import Location
 from parser_i import Interface
 
 

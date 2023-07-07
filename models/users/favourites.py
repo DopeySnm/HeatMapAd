@@ -1,7 +1,7 @@
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String,  ForeignKey
 from db.base import Base
-from model.users.user import User
+from models.users.user import User
 
 class Favourites(Base):
     __tablename__ = 'favourites'

@@ -1,5 +1,5 @@
 from datetime import date
-from model.location import Location
+from models.location import Location
 
 class RealEstate:
     def __init__(self,

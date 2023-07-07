@@ -1,6 +1,6 @@
-from model.ad import Ad
-from model.description import Description
-from model.location import Location
+from models.ad import Ad
+from models.description import Description
+from models.location import Location
 
 
 class Interface:

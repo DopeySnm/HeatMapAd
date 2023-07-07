@@ -1,9 +1,9 @@
 from datetime import date
 from db.base import Base
-from model.description import Description
-from model.location import Location
+from models.description import Description
+from models.location import Location
 from sqlalchemy.orm import relationship
-from model.real_estate import RealEstate
+from models.real_estate import RealEstate
 from sqlalchemy import Column, Integer, String,  ForeignKey, Float, Date
 
 class Ad(RealEstate, Base):

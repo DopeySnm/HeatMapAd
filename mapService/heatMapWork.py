@@ -1,9 +1,9 @@
 import folium
 from folium.plugins import HeatMap
-from model.ad import Ad
-from model.infrastructure import Infrastructure
-from model.location import Location
-from model.real_estate import RealEstate
+from models.ad import Ad
+from models.infrastructure import Infrastructure
+from models.location import Location
+from models.real_estate import RealEstate
 from datetime import date
 
 class HeatMapWork:

@@ -3,8 +3,8 @@ from datetime import date
 from sqlalchemy.orm import relationship
 
 from db.base import Base
-from model.location import Location
-from model.real_estate import RealEstate
+from models.location import Location
+from models.real_estate import RealEstate
 from sqlalchemy import Column, Integer, String, ForeignKey, Date
 
 class Infrastructure(RealEstate, Base):

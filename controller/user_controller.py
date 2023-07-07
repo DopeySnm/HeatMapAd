@@ -1,8 +1,8 @@
 from db.db_users.db_users_helper import DBHelperUsers
-from model.users.favourites import Favourites
-from model.users.history import History
-from model.users.tokens import Tokens
-from model.users.user import User
+from models.users.favourites import Favourites
+from models.users.history import History
+from models.users.tokens import Tokens
+from models.users.user import User
 
 class UserController:
     def check_admin(self, id_telegram: int):
