@@ -78,8 +78,6 @@ class HeatMapWork:
 
         return self.my_map.get_root().render()
 
-
-
 def test():
     start_location = Location(city="Челябинск", coordinate_x=55.17869847587624, coordinate_y=61.3284869196522)
 

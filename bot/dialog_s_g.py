@@ -2,7 +2,8 @@ from aiogram.dispatcher.filters.state import StatesGroup, State
 
 class DialogSG(StatesGroup):
     menu_city = State()
-    filter = State()
+    heat_map_filter = State()
+    analytical_map_filter = State()
     admin = State()
     filter_total_area = State()
     filter_price = State()

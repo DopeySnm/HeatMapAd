@@ -45,15 +45,15 @@ async def set_filter_price(c: CallbackQuery, button: Button, manager: DialogMana
 
 filter_change_price_dialog = Row(
     Checkbox(
-        Format(f"✓  Min price"),
-        Format(f"Min price"),
+        Format(f"✓  Минимальная цена"),
+        Format(f"Минимальная цена"),
         id="minPrice",
         default=True,
         on_click=change_filter_price,
     ),
     Checkbox(
-        Format(f"✓  Max price"),
-        Format(f"Max price"),
+        Format(f"✓  Максимальная цена"),
+        Format(f"Максимальная цена"),
         id="maxPrice",
         default=False,
         on_click=change_filter_price,
@@ -75,11 +75,10 @@ filter_plus_value_price_dialog = Row(
 )
 
 async def go_filter_2(c: CallbackQuery, button: Button, manager: DialogManager):
-    await manager.dialog().switch_to(DialogSG.filter)
+    await manager.dialog().switch_to(DialogSG.heat_map_filter)
 
 main_filter_price = Window(
-    Format("Min price: {min_price}"),
-    Format("Max price: {max_price}"),
+    Format("Цена: от {min_price} до {max_price}"),
     filter_change_price_dialog,
     filter_minus_value_price_dialog,
     filter_plus_value_price_dialog,

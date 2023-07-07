@@ -45,15 +45,15 @@ async def set_filter_num_floor(c: CallbackQuery, button: Button, manager: Dialog
 
 filter_change_floor_dialog = Row(
     Checkbox(
-        Format(f"✓  Min Floor"),
-        Format(f"Min Floor"),
+        Format(f"✓  Минимальный этаж"),
+        Format(f"Минимальный этаж"),
         id="minFloor",
         default=True,
         on_click=change_filter_num_floor,
     ),
     Checkbox(
-        Format(f"✓  Max Floor"),
-        Format(f"Max Floor"),
+        Format(f"✓  Максимальный Floor"),
+        Format(f"Максимальный Floor"),
         id="maxFloor",
         default=False,
         on_click=change_filter_num_floor,
@@ -75,11 +75,10 @@ filter_plus_value_floor_dialog = Row(
 )
 
 async def go_filter_3(c: CallbackQuery, button: Button, manager: DialogManager):
-    await manager.dialog().switch_to(DialogSG.filter)
+    await manager.dialog().switch_to(DialogSG.heat_map_filter)
 
 main_filter_num_floor = Window(
-    Format("Min Num Floor: {min_floor}"),
-    Format("Max Num Floor: {max_floor}"),
+    Format("Этаж: от {min_floor} до {max_floor}"),
     filter_change_floor_dialog,
     filter_minus_value_floor_dialog,
     filter_plus_value_floor_dialog,

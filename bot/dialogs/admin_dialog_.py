@@ -12,7 +12,7 @@ async def get_data_admin(dialog_manager: DialogManager, **kwargs):
     }
 
 async def go_filter(c: CallbackQuery, button: Button, manager: DialogManager):
-    await manager.dialog().switch_to(DialogSG.filter)
+    await manager.dialog().switch_to(DialogSG.heat_map_filter)
 
 admin_dialog = Window(
     Format("Привет, {admin_name}"),

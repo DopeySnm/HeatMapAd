@@ -10,18 +10,18 @@ async def change_type_housing(event: ChatEvent, checkbox: ManagedCheckboxAdapter
         manager.current_context().start_data["resale"] = state
 
 filter_type_housing = Row(
-        Checkbox(
-                Format(f"✓  New Building"),
-                Format(f"New Building"),
-                id="new_building",
-                default=True,
-                on_click=change_type_housing,
-            ),
-            Checkbox(
-                Format(f"✓  Resale"),
-                Format(f"Resale"),
-                id="resale",
-                default=True,
-                on_click=change_type_housing,
-            ),
+    Checkbox(
+        Format(f"✓  Новостройка"),
+        Format(f"Новостройка"),
+        id="new_building",
+        default=True,
+        on_click=change_type_housing,
+    ),
+    Checkbox(
+        Format(f"✓  Вторичное жилье"),
+        Format(f"Вторичное жилье"),
+        id="resale",
+        default=True,
+        on_click=change_type_housing,
+    )
 )

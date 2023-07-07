@@ -12,7 +12,7 @@ def select_city():
 async def go_filter(c: CallbackQuery, button: Button, manager: DialogManager):
     id = int(button.widget_id)
     manager.current_context().start_data["city"] = select_city()[id]
-    await manager.dialog().switch_to(DialogSG.filter)
+    await manager.dialog().switch_to(DialogSG.heat_map_filter)
 
 def test_buttons_creator(btn_quantity):
     buttons = []

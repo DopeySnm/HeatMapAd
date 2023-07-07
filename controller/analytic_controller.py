@@ -12,6 +12,16 @@ class AnalyticController:
             list_city.append(location.city)
         return list_city
 
+    def get_img_analytical_map(self,
+                               city: str,
+                               infrastructure_objects: bool,
+                               type_map: str,):
+        return "Вывод: ", \
+            "Город", city, \
+            "Объекты инраструктуры", infrastructure_objects, \
+            "Тип карты", type_map
+
+
     def get_img_heat_map(self,
                          city: str,
                          min_price: int,
@@ -23,7 +33,8 @@ class AnalyticController:
                          min_floor: int,
                          max_floor: int,
                          min_total_area: float,
-                         max_total_area: float):
+                         max_total_area: float,
+                         repair: bool):
         return "Вывод:", \
             "Город", city, \
             "Минимальная цена", min_price, \
@@ -35,7 +46,8 @@ class AnalyticController:
             "Минимальный этаж", min_floor, \
             "Максимальный этаж", max_floor, \
             "Минимальная общая площадь кв/м", min_total_area, \
-            "Максимальная общая площадь кв/м", max_total_area
+            "Максимальная общая площадь кв/м", max_total_area, \
+            "Ремонт", repair
 
     def show_map_in_browser(self, city: str):
         ads = DBHelper().get_ads_by_city(city)

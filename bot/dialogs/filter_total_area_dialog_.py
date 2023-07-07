@@ -44,15 +44,15 @@ async def set_filter_total_area(c: CallbackQuery, button: Button, manager: Dialo
 
 filter_change_total_area = Row(
     Checkbox(
-        Format(f"✓  Min Total Area"),
-        Format(f"Min Total Area"),
+        Format(f"✓  Минимальная площадь"),
+        Format(f"Минимальная площадь"),
         id="minTotalArea",
         default=True,
         on_click=change_filter_total_area,
     ),
     Checkbox(
-        Format(f"✓  Max Total Area"),
-        Format(f"Max Total Area"),
+        Format(f"✓  Максимальная площадь"),
+        Format(f"Максимальная площадь"),
         id="maxTotalArea",
         default=False,
         on_click=change_filter_total_area,
@@ -74,11 +74,10 @@ filter_plus_value_total_area = Row(
 )
 
 async def go_filter_1(c: CallbackQuery, button: Button, manager: DialogManager):
-    await manager.dialog().switch_to(DialogSG.filter)
+    await manager.dialog().switch_to(DialogSG.heat_map_filter)
 
 main_filter_total_area = Window(
-    Format("Min Total Area: {min_total_area}"),
-    Format("Max Total Area: {max_total_area}"),
+    Format("Площадь м²: от {min_total_area} до {max_total_area}"),
     filter_change_total_area,
     filter_minus_value_total_area,
     filter_plus_value_total_area,
