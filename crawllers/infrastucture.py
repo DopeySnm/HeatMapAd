@@ -57,7 +57,7 @@ class CrawllerInfrastructure(Crawller):
                 for box in boxes:
                     org_built = self.parser.select_infrastucture(box.get_attribute("outerHTML"))
                     lst_orgs.append(org_built)
-                    break
+                    # break
                 break
                 self.next_page()
         except Exception:

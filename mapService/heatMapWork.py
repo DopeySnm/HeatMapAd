@@ -5,8 +5,6 @@ from models.infrastructure import Infrastructure
 from models.location import Location
 from models.real_estate import RealEstate
 from datetime import date
-import ipywidgets
-
 
 class HeatMapWork:
     def __init__(self, start_location: Location, list_ad: list, list_infrastructure):
@@ -24,7 +22,7 @@ class HeatMapWork:
         return result_description
 
     def add_heat_map_ad_to_map(self):
-        matrix = [[ad.location.coordinate_x, ad.location.coordinate_y, ad.magnitude] for ad in self.list_ad]
+        matrix = [[ad.location.coordinate_x, ad.location.coordinate_y, 0.1 ] for ad in self.list_ad]
         # создаём матрицу с кориднатами и магнитудой для тепловой карты
 
         HeatMap(data=matrix).add_to(self.ad_group.add_to(self.my_map))  # добавляем тепловые метки
@@ -56,7 +54,7 @@ class HeatMapWork:
         self.my_map.show_in_browser()
 
     def get_html_map(self):
-        self.my_map = folium.Map(location=(self.start_location.coordinate_x, self.start_location.coordinate_y),
+        self.my_map = folium.Map(location=(self.start_location[1], self.start_location[0]),
                            max_bounds=True,
                            tiles=folium.raster_layers.TileLayer(tiles='openstreetmap', name='Тепловая крата'),
                            zoom_start=12,
@@ -68,13 +66,9 @@ class HeatMapWork:
 
         self.add_ad_to_map() # добавляем метки объявлении с описанием
 
-        self.add_infrastructure_to_map() # добавляем метки инфраструктур
+        if len(self.list_infrastructure)>2:
+            self.add_infrastructure_to_map() # добавляем метки инфраструктур
 
         folium.LayerControl().add_to(self.my_map) # добавляет панельку с FeatureGroup которая позволяет скрывать их
 
         return self.my_map.get_root().render()
-
-class Wigets:
-    def __init__(self):
-        pass
-

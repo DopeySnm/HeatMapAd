@@ -52,6 +52,13 @@ class DBHelper:
             db.close()
         return result_ads
 
+    def get_description_values(self):
+        with Session(autoflush=False, bind=self.engine) as db:
+            res = {"housing_type": list(set([i[0] for i in db.query(Description.housing_type).group_by(Description.housing_type).all()])),
+                    "repair": list(set([i[0] for i in db.query(Description.repair).group_by(Description.housing_type).all()]))}
+            db.close()
+        return res
+
     def get_ad_by_id(self, id: int):
         with Session(autoflush=False, bind=self.engine) as db:
             result = db.query(Ad).filter(Ad.id == id).first()
@@ -107,3 +114,6 @@ def ad_test_data():
             location=location, description=description)
 
     DBHelper().insert(ad, infrastructure)
+
+if __name__ == "__main__":
+    print(DBHelper().get_description_values())
