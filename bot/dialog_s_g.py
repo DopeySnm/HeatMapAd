@@ -8,3 +8,4 @@ class DialogSG(StatesGroup):
     filter_total_area = State()
     filter_price = State()
     filter_num_floor = State()
+    user_personal_area = State()

@@ -34,13 +34,8 @@ async def go_menu_city(c: CallbackQuery, button: Button, manager: DialogManager)
 async def go_heat_map_filter(c: CallbackQuery, button: Button, manager: DialogManager):
     await manager.dialog().switch_to(DialogSG.heat_map_filter)
 
-# async def change_type_map(event: ChatEvent, checkbox: ManagedCheckboxAdapter, manager: DialogManager):
-#     state = not checkbox.is_checked()
-#     if state:
-#         manager.current_context().start_data["type_map"] = "HeatMap"
-#     else:
-#         manager.current_context().start_data["type_map"] = "AnalyticalMap"
-
+async def close(c: CallbackQuery, button: Button, manager: DialogManager):
+    await manager.reset_stack()
 
 filter_analytical_map = Window(
     Format("Привет {user_name}, Город: {city}"),
@@ -51,6 +46,7 @@ filter_analytical_map = Window(
 
     Button(Format("Выбрать город"), id="go_city_menu", on_click=go_menu_city),
     Button(Format("Отправить запрос"), id="sendData", on_click=send_data),
+    Button(Format("Close"), id="close", on_click=close),
     getter=get_data_filter,
     state=DialogSG.analytical_map_filter
 )

@@ -14,7 +14,7 @@ async def go_filter(c: CallbackQuery, button: Button, manager: DialogManager):
     manager.current_context().start_data["city"] = select_city()[id]
     await manager.dialog().switch_to(DialogSG.heat_map_filter)
 
-def test_buttons_creator(btn_quantity):
+def city_buttons_creator(btn_quantity):
     buttons = []
     counter = 0
     for i in btn_quantity:
@@ -24,12 +24,12 @@ def test_buttons_creator(btn_quantity):
         counter += 1
     return buttons
 
-test_buttons = test_buttons_creator(select_city())
+city_buttons = city_buttons_creator(select_city())
 
 menu_city_dialog = Window(
     Format("Выберете город"),
     ScrollingGroup(
-        *test_buttons,
+        *city_buttons,
         id="city_group",
         width=4,
         height=4,

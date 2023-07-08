@@ -34,7 +34,8 @@ class AnalyticController:
                          max_floor: int,
                          min_total_area: float,
                          max_total_area: float,
-                         repair: bool):
+                         repair: bool,
+                         not_repair: bool):
         return "Вывод:", \
             "Город", city, \
             "Минимальная цена", min_price, \
@@ -47,7 +48,8 @@ class AnalyticController:
             "Максимальный этаж", max_floor, \
             "Минимальная общая площадь кв/м", min_total_area, \
             "Максимальная общая площадь кв/м", max_total_area, \
-            "Ремонт", repair
+            "C Ремонтм", repair, \
+            "Без ремонта", not_repair
 
     def show_map_in_browser(self, city: str):
         ads = DBHelper().get_ads_by_city(city)

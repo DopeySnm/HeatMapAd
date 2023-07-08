@@ -34,6 +34,11 @@ class DBHelperUsers:
             db.add(user)
             db.commit()
 
+    def get_list_user(self):
+        with Session(autoflush=False, bind=self.engine) as db:
+            result = db.query(User).all()
+            return result
+
     def get_list_history_by_user_id(self, user_id: int):
         with Session(autoflush=False, bind=self.engine) as db:
             result = db.query(History).filter(History.user_id == user_id)
@@ -54,7 +59,7 @@ class DBHelperUsers:
             result = db.query(User).filter(User.id_telegram == id_telegram).first()
             return result
 
-    def update_tokens_user_by_id_telegram(self, count_tokens: int, id_telegram: int):
+    def add_tokens_user_by_id_telegram(self, count_tokens: int, id_telegram: int):
         with Session(autoflush=False, bind=self.engine) as db:
             get_old_tokens = db.query(Tokens).join(User).filter(User.id_telegram == id_telegram).first()
             if (get_old_tokens != None):

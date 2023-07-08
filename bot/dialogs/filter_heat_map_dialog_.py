@@ -12,6 +12,7 @@ from bot.dialog_s_g import DialogSG
 async def get_data_filter(dialog_manager: DialogManager, **kwargs):
     return {
         "user_name": {dialog_manager.current_context().start_data.get("user_name")},
+        "role": {dialog_manager.current_context().start_data.get("role")},
         "city": {dialog_manager.current_context().start_data.get("city")},
         "min_price": {dialog_manager.current_context().start_data.get("min_price")},
         "max_price": {dialog_manager.current_context().start_data.get("max_price")},
@@ -23,7 +24,8 @@ async def get_data_filter(dialog_manager: DialogManager, **kwargs):
         "max_floor": {dialog_manager.current_context().start_data.get("max_floor")},
         "min_total_area": {dialog_manager.current_context().start_data.get("min_total_area")},
         "max_total_area": {dialog_manager.current_context().start_data.get("max_total_area")},
-        "repair": {dialog_manager.current_context().start_data.get("repair")}
+        "repair": {dialog_manager.current_context().start_data.get("repair")},
+        "not_repair": {dialog_manager.current_context().start_data.get("not_repair")}
     }
 
 async def send_data(c: CallbackQuery, button: Button, manager: DialogManager):
@@ -39,6 +41,7 @@ async def send_data(c: CallbackQuery, button: Button, manager: DialogManager):
     min_total_area = manager.current_context().start_data.get("min_total_area")
     max_total_area = manager.current_context().start_data.get("max_total_area")
     repair = manager.current_context().start_data.get("repair")
+    not_repair = manager.current_context().start_data.get("not_repair")
     data = AnalyticController().get_img_heat_map(city=city,
                                                  min_price=min_price,
                                                  max_price=max_price,
@@ -50,7 +53,8 @@ async def send_data(c: CallbackQuery, button: Button, manager: DialogManager):
                                                  max_floor=max_floor,
                                                  min_total_area=min_total_area,
                                                  max_total_area=max_total_area,
-                                                 repair=repair)
+                                                 repair=repair,
+                                                 not_repair=not_repair)
     print(c.from_user.full_name, data)
     await c.message.answer(data)
 
@@ -70,21 +74,23 @@ async def go_filter_analytical_map(c: CallbackQuery, button: Button, manager: Di
     manager.current_context().start_data["type_map"] = "AnalyticalMap"
     await manager.dialog().switch_to(DialogSG.analytical_map_filter)
 
-filter_dialog = Window(
-        Format("Привет {user_name}, Город: {city}"),
+async def close(c: CallbackQuery, button: Button, manager: DialogManager):
+    await manager.reset_stack()
+
+filter_heat_map_dialog = Window(
+        Format("Привет {user_name}, Роль {role} Город: {city}"),
         Format("Тип карты: {type_map}"),
         Format("Объекты инфраструктуры: {infrastructure_objects}"),
         Format("Цена: от {min_price} до {max_price}"),
         Format("Этаж: от {min_floor} до {max_floor}"),
         Format("Площадь м²: от {min_total_area} до {max_total_area}"),
-        Format("Ремонт: {repair}"),
+        Format("C ремонтом: {repair}"),
+        Format("Без ремонта: {not_repair}"),
         Format("Новостройка: {new_building}"),
         Format("Вторичное жилье: {resale}"),
         Button(Format("Аналитическая карта"), id="go_filter_analytical_map", on_click=go_filter_analytical_map),
-        Row(
-            filter_infrastructure_objects_dialog,
-            filter_repair_dialog,
-        ),
+        filter_infrastructure_objects_dialog,
+        filter_repair_dialog,
         filter_type_housing,
         Row(
             Button(Format("Площадь"), id="go_filter_total_area", on_click=go_filter_total_area),
@@ -93,6 +99,7 @@ filter_dialog = Window(
         ),
         Button(Format("Выбрать город"), id="go_city_menu", on_click=go_menu_city),
         Button(Format("Отправить запрос"), id="sendData", on_click=send_data),
+        Button(Format("Close"), id="close", on_click=close),
         getter=get_data_filter,
         state=DialogSG.heat_map_filter,
 )
