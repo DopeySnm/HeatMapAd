@@ -1,7 +1,7 @@
 from db.db_helper import DBHelper
-from crawller.avito import CrawllerAvito
-from crawller.cian import CrawllerCian
-from crawller.infrastucture import CrawllerInfrastructure
+from crawllers.avito import CrawllerAvito
+from crawllers.cian import CrawllerCian
+from crawllers.infrastucture import CrawllerInfrastructure
 
 class DownloadController:
     def __init__(self):

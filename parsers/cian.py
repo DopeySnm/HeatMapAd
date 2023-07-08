@@ -61,6 +61,15 @@ class ParserCian(Parser):
         adress = adress.find("span", itemprop="name")["content"]
         return adress
 
+    def select_views(self, soup):
+        views = soup.find("button", class_="a10a3f92e9--button--lyQVM")
+        views = self.check_value(views)
+
+        views = views.split(",")[0]
+        if views:
+            views = re.sub(r"\D", "", views)
+        return views
+
     def select_link(self, soup):
         link = soup.find("meta", property="og:url")["content"]
         return link
@@ -105,15 +114,12 @@ class ParserCian(Parser):
             total_area = box_about_flat["Общая площадь"]
             total_area = total_area.replace(" м2", "").replace(",", ".")
         if "Жилая площадь" in box_about_flat:
-            living_area = box_about_flat["Жилая площадь"]
+            living_area = box_about_flat["Площадь кухни"]
             living_area = living_area.replace(" м2", "").replace(",", ".")
         else:
             living_area = None
-
-        bathroom = None
-        year_built = None
-
-        return Description(main_description=main_description,total_area=total_area,floor=floor,living_area=living_area,housing_type=housing_type,bathroom=bathroom,repair=repair,year_built=year_built)
+        count_views = self.select_views(soup)
+        return Description(main_description=main_description,total_area=total_area,floor=floor,living_area=living_area,housing_type=housing_type,repair=repair, count_views=count_views)
 
     def select_about_flat(self, soup):
         data = soup.find_all("div", class_="a10a3f92e9--group--K5ZqN")

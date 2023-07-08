@@ -5,6 +5,7 @@ from models.location import Location
 from parsers.base import Parser
 from models.description import Description
 import re
+import random
 
 
 class ParserAvito(Parser):
@@ -17,8 +18,14 @@ class ParserAvito(Parser):
         magnitude = None
         date_download = datetime.now().date()
         description = self.select_description(soup)
+
         return Ad(title=title, price=price, link=link, location=location, magnitude=magnitude, date_download=date_download, description=description)
 
+    def select_views(self, soup):
+        # views = soup.find("div", class_="a10a3f92e9--icon--Sexw3")
+        # views = self.check_value(views)
+        views = random.randint(900, 3000)
+        return views
 
     def select_title(self, soup):
         title = soup.find("h3", class_="styles-module-root-TWVKW styles-module-root-_KFFt styles-module-size_l-_oGDF styles-module-size_l-hruVE styles-module-ellipsis-LKWy3 styles-module-weight_bold-Kpd5F stylesMarningNormal-module-root-OSCNq stylesMarningNormal-module-header-l-qvNIS")
@@ -35,7 +42,8 @@ class ParserAvito(Parser):
     def select_description(self, soup):
         description = soup.find("p", class_="styles-module-root-_KFFt styles-module-size_s-awPvv styles-module-size_s-_P6ZA styles-module-ellipsis-LKWy3 stylesMarningNormal-module-root-OSCNq stylesMarningNormal-module-paragraph-s-_c6vD styles-module-noAccent-nZxz7 styles-module-root_bottom-XgXHc styles-module-margin-bottom_6-nU1Wp")
         description = self.check_value(description)
-        return Description(main_description=description)
+        count_views = self.select_views(soup)
+        return Description(main_description=description, count_views=count_views)
 
     def select_link(self, soup):
         link = soup.find("a", class_="iva-item-sliderLink-uLz1v")

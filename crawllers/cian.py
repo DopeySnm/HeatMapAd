@@ -7,8 +7,10 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from parsers.cian import ParserCian
+from crawllers.base import Crawller
 
-class CrawllerCian:
+
+class CrawllerCian(Crawller):
     def __init__(self):
         self.useragent = UserAgent()
         self.options = webdriver.ChromeOptions()
@@ -89,10 +91,6 @@ class CrawllerCian:
             print("Работа Краулера Циан окончена")
             self.exit()
             return lst_ads
-
-    def exit(self):
-        self.driver.close()
-        self.driver.quit()
 
 
 if __name__ == "__main__":

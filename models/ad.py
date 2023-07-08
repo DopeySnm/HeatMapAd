@@ -11,7 +11,7 @@ class Ad(RealEstate, Base):
 
     id = Column(Integer, primary_key=True)
     price = Column(Integer)
-    link = Column(String)
+    link = Column(String, unique=True)
     title = Column(String)
     magnitude = Column(Float)
     date_download = Column(Date)
