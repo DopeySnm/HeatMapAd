@@ -24,3 +24,7 @@ class Parser:
         most_relevant = found_places[0]
         lon, lat = most_relevant['GeoObject']['Point']['pos'].split(" ")
         return lon, lat
+
+if __name__ == "__main__":
+    addres = "Москва, Серебряническая набережная, 19"
+    print(Parser().get_coordinates(addres))

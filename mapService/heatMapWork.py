@@ -5,19 +5,14 @@ from models.infrastructure import Infrastructure
 from models.location import Location
 from models.real_estate import RealEstate
 from datetime import date
+import ipywidgets
 
 
 class HeatMapWork:
-    def __init__(self, start_location: Location):
+    def __init__(self, start_location: Location, list_ad: list, list_infrastructure):
         self.start_location = start_location
-        self.list_ad = []
-        self.list_infrastructure = []
-
-    def set_ad_list(self, data):
-        self.list_ad += data
-
-    def set_infrastructure_list(self, data):
-        self.list_infrastructure += data
+        self.list_ad = list_ad
+        self.list_infrastructure = list_infrastructure
 
     def get_html_description(self, re: RealEstate):
         if isinstance(re, Ad):
@@ -79,43 +74,7 @@ class HeatMapWork:
 
         return self.my_map.get_root().render()
 
+class Wigets:
+    def __init__(self):
+        pass
 
-
-def test():
-    start_location = Location(city="Челябинск", coordinate_x=55.17869847587624, coordinate_y=61.3284869196522)
-
-    hp = HeatMapWork(start_location=start_location)
-
-    list_infrastructure = []
-    list_infrastructure.append(
-        Infrastructure(location=Location(coordinate_x=51.17869847587624, coordinate_y=62.3284869196522, city="Челябинск"),
-                       title="Садик №3",
-                       type="Образовательное учереждение",
-                       data_download=date.today()))
-
-    hp.set_infrastructure_list(list_infrastructure)
-
-    list_ad = []
-    list_ad.append(
-        Ad(
-            location=Location(coordinate_x=56.17869847587624, coordinate_y=62.3284869196522, city="Челябинск"),
-            title="квартира",
-            magnitude=0.5,
-            price=1000,
-            link="Сслыка",
-            data_download=date.today()))
-
-    list_ad.append(
-        Ad(
-            location=Location(coordinate_x=57.17869847587624, coordinate_y=63.3284869196522, city="Челябинск"),
-            title="квартира1",
-            magnitude=0.5,
-            price=1000,
-            link="Сслыка",
-            data_download=date.today()))
-
-    hp.set_ad_list(list_ad)
-
-    map_html = hp.get_html_map()
-
-    hp.my_map.show_in_browser()

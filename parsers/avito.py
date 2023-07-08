@@ -52,8 +52,7 @@ class ParserAvito(Parser):
 
     def select_location(self, soup) -> Location:
         full_address = self.select_adress(soup)
-        coordinate_x = None
-        coordinate_y = None
+
         city = "Челябинск"
         if full_address:
             street = full_address.split(", ")[0]
@@ -61,6 +60,9 @@ class ParserAvito(Parser):
         else:
             street = None
             house = None
+        coordinates = self.get_coordinates(city+full_address)
+        coordinate_x = coordinates[1]
+        coordinate_y = coordinates[0]
         return Location(coordinate_x=coordinate_x, coordinate_y=coordinate_y, full_address=full_address, city=city, street=street, house=house)
 
     def select_adress(self, soup):

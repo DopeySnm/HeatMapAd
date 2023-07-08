@@ -51,8 +51,8 @@ class ParserCian(Parser):
             house = None
 
         coordinates = self.get_coordinates(full_address)
-        coordinate_x = coordinates[0]
-        coordinate_y = coordinates[1]
+        coordinate_x = coordinates[1]
+        coordinate_y = coordinates[0]
         return Location(coordinate_x=coordinate_x, coordinate_y=coordinate_y, full_address=full_address, city=city, street=street, house=house)
 
     def select_adress(self,soup):
