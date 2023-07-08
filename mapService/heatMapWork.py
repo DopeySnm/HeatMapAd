@@ -1,3 +1,5 @@
+import os
+import time
 import folium
 from folium.plugins import HeatMap
 from models.ad import Ad
@@ -5,8 +7,7 @@ from models.infrastructure import Infrastructure
 from models.location import Location
 from models.real_estate import RealEstate
 from datetime import date
-import ipywidgets
-
+from selenium import webdriver
 
 class HeatMapWork:
     def __init__(self, start_location: Location, list_ad: list, list_infrastructure):
@@ -55,11 +56,24 @@ class HeatMapWork:
         self.get_html_map()
         self.my_map.show_in_browser()
 
+    def get_png(self):
+        mapFname = 'map.html'
+        self.my_map.save(mapFname)
+        tmpurl = 'file://{path}/{mapfile}'.format(path=os.getcwd(), mapfile=mapFname)
+
+        browser = webdriver.Chrome()
+        browser.get(tmpurl)
+        browser.fullscreen_window()
+        time.sleep(5)
+        browser.save_screenshot('map.png')
+        browser.quit()
+        return 'map.png'
+
     def get_html_map(self):
         self.my_map = folium.Map(location=(self.start_location.coordinate_x, self.start_location.coordinate_y),
                            max_bounds=True,
                            tiles=folium.raster_layers.TileLayer(tiles='openstreetmap', name='Тепловая крата'),
-                           zoom_start=12,
+                           zoom_start=13,
                            min_zoom=3)# создаём крату
 
         self.ad_group = folium.FeatureGroup(name="Объявления")  # создаём группу тепловой карты "Объявления"
@@ -74,7 +88,45 @@ class HeatMapWork:
 
         return self.my_map.get_root().render()
 
-class Wigets:
-    def __init__(self):
-        pass
+def test():
+    start_location = Location(city="Челябинск", coordinate_x=55.17869847587624, coordinate_y=61.3284869196522)
 
+    hp = HeatMapWork(start_location=start_location)
+
+    list_infrastructure = []
+    list_infrastructure.append(
+        Infrastructure(location=Location(coordinate_x=51.17869847587624, coordinate_y=62.3284869196522, city="Челябинск"),
+                       title="Садик №3",
+                       type="Образовательное учереждение",
+                       data_download=date.today()))
+
+    hp.set_infrastructure_list(list_infrastructure)
+
+    list_ad = []
+    list_ad.append(
+        Ad(
+            location=Location(coordinate_x=56.17869847587624, coordinate_y=62.3284869196522, city="Челябинск"),
+            title="квартира",
+            magnitude=0.5,
+            price=1000,
+            link="Сслыка",
+            data_download=date.today()))
+
+    list_ad.append(
+        Ad(
+            location=Location(coordinate_x=57.17869847587624, coordinate_y=63.3284869196522, city="Челябинск"),
+            title="квартира1",
+            magnitude=0.5,
+            price=1000,
+            link="Сслыка",
+            data_download=date.today()))
+
+    hp.set_ad_list(list_ad)
+
+    map_html = hp.get_html_map()
+
+    hp.get_png()
+
+    # hp.my_map.show_in_browser()
+
+test()
