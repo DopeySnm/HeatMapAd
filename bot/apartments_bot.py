@@ -18,7 +18,7 @@ from bot.dialogs.user_personal_area_dialog_ import user_personal_area_dialog
 from controller.user_controller import UserController
 
 storage = MemoryStorage()
-bot = Bot(token="6351864281:AAGnD3Ij4UyF-oHQxScUDjc1iaW8tFueHzQ")
+bot = Bot(token="6348872062:AAFFdDz1ZOPEEhf3RdBMnHD7Z5ubYjzEpRA")
 dp = Dispatcher(bot, storage=storage)
 registry = DialogRegistry(dp)
 main_dialog = Dialog(
@@ -44,7 +44,7 @@ async def start(m: Message, dialog_manager: DialogManager):
                 "role": "Админ",
                 "city": "Челябинск",
                 "min_price": 1000,
-                "max_price": 10000,
+                "max_price": 10000000,
                 "user_name": m.from_user.full_name,
                 "infrastructure_objects": True,
                 "type_map": "HeatMap",
@@ -75,7 +75,7 @@ async def start(m: Message, dialog_manager: DialogManager):
             "role": role,
             "city": "Челябинск",
             "min_price": 1000,
-            "max_price": 10000,
+            "max_price": 10000000,
             "user_name": m.from_user.full_name,
             "infrastructure_objects": True,
             "type_map": "HeatMap",
@@ -106,7 +106,7 @@ async def start(m: Message, dialog_manager: DialogManager):
             "role": role,
             "city": "Челябинск",
             "min_price": 1000,
-            "max_price": 10000,
+            "max_price": 10000000,
             "user_name": m.from_user.full_name,
             "infrastructure_objects": True,
             "type_map": "HeatMap",

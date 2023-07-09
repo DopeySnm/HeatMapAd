@@ -6,8 +6,8 @@ from bot.dialog_s_g import DialogSG
 from controller.analytic_controller import AnalyticController
 
 def select_city():
-    #return AnalyticController().get_list_city()
-    return ["Челябинск", "Москва", "Екатеринбург"]
+    return AnalyticController().get_list_city()
+    # return ["Челябинск", "Москва", "Екатеринбург"]
 
 async def go_filter(c: CallbackQuery, button: Button, manager: DialogManager):
     id = int(button.widget_id)

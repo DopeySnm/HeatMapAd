@@ -15,13 +15,19 @@ class DBHelper:
     def create_db(self):
         Base.metadata.create_all(bind=self.engine)
 
-    #55.154, 61.4291
+    # 55.154, 61.4291, "Челябинск"
 
     def insert_city(self, coordinate_x: float, coordinate_y: float, city: str):
-        location = Location(coordinate_x=coordinate_x, coordinate_y=coordinate_y, city=city, street="center")
+        location = Location(coordinate_x=coordinate_x, coordinate_y=coordinate_y, city=city, street="center", full_address=city+" center")
         with Session(autoflush=False, bind=self.engine) as db:
             db.add(location)
             db.commit()
+
+    def get_list_city(self):
+        with Session(autoflush=False, bind=self.engine) as db:
+            result_ads = db.query(Location).filter(Location.street == "center")
+            db.close()
+        return result_ads
 
     def get_city_center(self, city: str):
         with Session(autoflush=False, bind=self.engine) as db:
@@ -99,21 +105,24 @@ class DBHelper:
     #             db.commit()
 
 
-def ad_test_data():
-    location = Location(coordinate_x=51, coordinate_y=52, city="Челябинск", district="ЧТЗ", street="Улица", house="1", flat="1")
+# DBHelper().insert_city(55.154, 61.4291, "Челябинск")
 
-    infrastructure = Infrastructure(type="Садик", title="Садик №2", location=location, data_download=datetime.date.today())
 
-    location = Location(coordinate_x=54, coordinate_y=54, city="Челябинск", district="ЧТЗ", street="Улица", house="1",
-                        flat="1")
-
-    description = Description(main_description="описание", total_area=10, floor=2000, year_built=2000, living_area="хз",
-                              housing_type="да", bathroom="нет", repair="хз")
-
-    ad = Ad(price=50000, link="Ссылка", title="Квартира 2", magnitude=0.5, data_download=datetime.date.today(),
-            location=location, description=description)
-
-    DBHelper().insert(ad, infrastructure)
-
-if __name__ == "__main__":
-    print(DBHelper().get_description_values())
+# def ad_test_data():
+#     location = Location(coordinate_x=51, coordinate_y=52, city="Челябинск", district="ЧТЗ", street="Улица", house="1", flat="1")
+#
+#     infrastructure = Infrastructure(type="Садик", title="Садик №2", location=location, data_download=datetime.date.today())
+#
+#     location = Location(coordinate_x=54, coordinate_y=54, city="Челябинск", district="ЧТЗ", street="Улица", house="1",
+#                         flat="1")
+#
+#     description = Description(main_description="описание", total_area=10, floor=2000, year_built=2000, living_area="хз",
+#                               housing_type="да", bathroom="нет", repair="хз")
+#
+#     ad = Ad(price=50000, link="Ссылка", title="Квартира 2", magnitude=0.5, data_download=datetime.date.today(),
+#             location=location, description=description)
+#
+#     DBHelper().insert(ad, infrastructure)
+#
+# if __name__ == "__main__":
+#     print(DBHelper().get_description_values())

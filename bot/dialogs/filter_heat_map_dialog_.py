@@ -1,8 +1,10 @@
+import os
+
 from aiogram.types import CallbackQuery
 from aiogram_dialog import Window, DialogManager
 from aiogram_dialog.widgets.text import Format
 from aiogram_dialog.widgets.kbd import Button, Row, Checkbox, ManagedCheckboxAdapter, Group, Radio, SwitchTo
-
+from PIL import Image
 from bot.dialogs.filter_infrastructure_objects_dialog_ import filter_infrastructure_objects_dialog
 from bot.dialogs.filter_repair_dialog_ import filter_repair_dialog
 from bot.dialogs.filter_type_housing_ import filter_type_housing
@@ -54,9 +56,14 @@ async def send_data(c: CallbackQuery, button: Button, manager: DialogManager):
                                                  min_total_area=min_total_area,
                                                  max_total_area=max_total_area,
                                                  repair=repair,
-                                                 not_repair=not_repair)
+                                                 not_repair=not_repair,
+                                                 id_tg_user=c.from_user.id)
     print(c.from_user.full_name, data)
     await c.message.answer(data)
+    img = open(str(c.from_user.id) + '.png', 'rb')
+    await c.bot.send_photo(chat_id=c.message.chat.id, photo=img)
+    os.remove(str(c.from_user.id) + '.png')
+    os.remove(str(c.from_user.id) + '.html')
 
 async def go_menu_city(c: CallbackQuery, button: Button, manager: DialogManager):
     await manager.dialog().switch_to(DialogSG.menu_city)
