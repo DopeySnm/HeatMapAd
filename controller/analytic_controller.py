@@ -130,20 +130,22 @@ class AnalyticController:
 
         hmw.get_png(id_tg_user)
 
-        return "Вывод:", \
-            "Город", city, \
-            "Минимальная цена", min_price, \
-            "Максимальная цена", max_price, \
-            "Объекты инраструктуры", infrastructure_objects, \
-            "Тип карты", type_map, \
-            "Вторичное жильё", resale, \
-            "Новостройка", new_building, \
-            "Минимальный этаж", min_floor, \
-            "Максимальный этаж", max_floor, \
-            "Минимальная общая площадь кв/м", min_total_area, \
-            "Максимальная общая площадь кв/м", max_total_area, \
-            "C Ремонтм", repair, \
-            "Без ремонта", not_repair
+        return list_filter_ads
+
+        # return "Вывод:", \
+        #     "Город", city, \
+        #     "Минимальная цена", min_price, \
+        #     "Максимальная цена", max_price, \
+        #     "Объекты инраструктуры", infrastructure_objects, \
+        #     "Тип карты", type_map, \
+        #     "Вторичное жильё", resale, \
+        #     "Новостройка", new_building, \
+        #     "Минимальный этаж", min_floor, \
+        #     "Максимальный этаж", max_floor, \
+        #     "Минимальная общая площадь кв/м", min_total_area, \
+        #     "Максимальная общая площадь кв/м", max_total_area, \
+        #     "C Ремонтм", repair, \
+        #     "Без ремонта", not_repair
 
     # def show_map_in_browser(self, city: str):
     #     ads = DBHelper().get_ads_by_city(city)

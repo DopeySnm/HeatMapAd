@@ -1,7 +1,7 @@
 from aiogram.types import CallbackQuery
-from aiogram_dialog import Window, Dialog, DialogRegistry, DialogManager, StartMode, ChatEvent, ShowMode
-from aiogram_dialog.widgets.kbd import Button, Row, Checkbox, ManagedCheckboxAdapter, Group, Radio, SwitchTo
-from aiogram_dialog.widgets.text import Format, Const
+from aiogram_dialog import Window, DialogManager
+from aiogram_dialog.widgets.kbd import Button
+from aiogram_dialog.widgets.text import Format
 
 from bot.dialog_s_g import DialogSG
 from bot.dialogs.filter_infrastructure_objects_dialog_ import filter_infrastructure_objects_dialog

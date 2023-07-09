@@ -9,3 +9,5 @@ class DialogSG(StatesGroup):
     filter_price = State()
     filter_num_floor = State()
     user_personal_area = State()
+    list_ads = State()
+    selected_ad = State()

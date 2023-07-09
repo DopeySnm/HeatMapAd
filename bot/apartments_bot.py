@@ -1,18 +1,17 @@
 from aiogram import Bot, Dispatcher, executor
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from aiogram.types import Message, CallbackQuery, KeyboardButton, ReplyKeyboardMarkup
-from aiogram.dispatcher.filters.state import StatesGroup, State
-from aiogram_dialog import Window, Dialog, DialogRegistry, DialogManager, StartMode, ChatEvent, ShowMode
-from aiogram_dialog.widgets.kbd import Button, Row, Checkbox, ManagedCheckboxAdapter, Group, Radio, SwitchTo
-from aiogram_dialog.widgets.text import Format, Const
+from aiogram.types import Message
+from aiogram_dialog import Dialog, DialogRegistry, DialogManager, StartMode, ShowMode
 
 from bot.dialog_s_g import DialogSG
-from bot.dialogs.admin_dialog_ import admin_dialog
-from bot.dialogs.filter_heat_map_dialog_ import filter_heat_map_dialog
-from bot.dialogs.filter_num_floor_dialog_ import main_filter_num_floor
-from bot.dialogs.filter_price_dialog_ import main_filter_price
-from bot.dialogs.filter_total_area_dialog_ import main_filter_total_area
+from bot.dialogs.ad_dialog_ import selected_ad_dialog
+from bot.dialogs.dialogs_administration.admin_dialog_ import admin_dialog
+from bot.dialogs.filter_heat_map_dialogs.filter_heat_map_dialog_ import filter_heat_map_dialog
+from bot.dialogs.filter_heat_map_dialogs.filter_num_floor_dialog_ import main_filter_num_floor
+from bot.dialogs.filter_heat_map_dialogs.filter_price_dialog_ import main_filter_price
+from bot.dialogs.filter_heat_map_dialogs.filter_total_area_dialog_ import main_filter_total_area
 from bot.dialogs.filter_analytical_map_ import filter_analytical_map
+from bot.dialogs.list_asd_dialog_ import list_ads_dialog
 from bot.dialogs.menu_city_dialog_ import menu_city_dialog
 from bot.dialogs.user_personal_area_dialog_ import user_personal_area_dialog
 from controller.user_controller import UserController
@@ -29,7 +28,9 @@ main_dialog = Dialog(
     main_filter_price,
     main_filter_num_floor,
     filter_analytical_map,
-    user_personal_area_dialog
+    user_personal_area_dialog,
+    list_ads_dialog,
+    selected_ad_dialog
 )
 registry.register(main_dialog)
 
@@ -40,22 +41,23 @@ async def start(m: Message, dialog_manager: DialogManager):
         await dialog_manager.start(
             state=DialogSG.admin,
             data={
-                "tokens": tokens,
                 "role": "Админ",
-                "city": "Челябинск",
-                "min_price": 1000,
-                "max_price": 10000000,
                 "user_name": m.from_user.full_name,
-                "infrastructure_objects": True,
-                "type_map": "HeatMap",
-                "new_building": True,
-                "resale": True,
-                "min_floor": 1,
-                "max_floor": 10,
-                "min_total_area": 20,
-                "max_total_area": 50,
-                "repair": True,
-                "not_repair": True},
+                # "tokens": tokens,
+                # "city": "Челябинск",
+                # "min_price": 1000,
+                # "max_price": 10000000,
+                # "infrastructure_objects": True,
+                # "type_map": "HeatMap",
+                # "new_building": True,
+                # "resale": True,
+                # "min_floor": 1,
+                # "max_floor": 10,
+                # "min_total_area": 20,
+                # "max_total_area": 50,
+                # "repair": True,
+                # "not_repair": True
+            },
             mode=StartMode.RESET_STACK,
             show_mode=ShowMode.EDIT)
 
@@ -73,20 +75,21 @@ async def start(m: Message, dialog_manager: DialogManager):
         data={
             "tokens": tokens,
             "role": role,
-            "city": "Челябинск",
-            "min_price": 1000,
-            "max_price": 10000000,
             "user_name": m.from_user.full_name,
-            "infrastructure_objects": True,
-            "type_map": "HeatMap",
-            "new_building": True,
-            "resale": True,
-            "min_floor": 1,
-            "max_floor": 10,
-            "min_total_area": 20,
-            "max_total_area": 50,
-            "repair": True,
-            "not_repair": True},
+            # "city": "Челябинск",
+            # "min_price": 1000,
+            # "max_price": 10000000,
+            # "infrastructure_objects": True,
+            # "type_map": "HeatMap",
+            # "new_building": True,
+            # "resale": True,
+            # "min_floor": 1,
+            # "max_floor": 10,
+            # "min_total_area": 20,
+            # "max_total_area": 50,
+            # "repair": True,
+            # "not_repair": True
+        },
         mode=StartMode.RESET_STACK,
         show_mode=ShowMode.EDIT)
 
