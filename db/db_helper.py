@@ -23,12 +23,6 @@ class DBHelper:
             db.add(location)
             db.commit()
 
-    def get_list_city(self):
-        with Session(autoflush=False, bind=self.engine) as db:
-            result_ads = db.query(Location).filter(Location.street == "center").first()
-            db.close()
-        return result_ads
-
     def get_city_center(self, city: str):
         with Session(autoflush=False, bind=self.engine) as db:
             result_ads = db.query(Location).filter(Location.street == "center" and Location.city == city).first()
@@ -57,6 +51,13 @@ class DBHelper:
             result_ads = db.query(Ad).join(Location).filter(Location.city == city)
             db.close()
         return result_ads
+
+    def get_description_values(self):
+        with Session(autoflush=False, bind=self.engine) as db:
+            res = {"housing_type": list(set([i[0] for i in db.query(Description.housing_type).group_by(Description.housing_type).all()])),
+                    "repair": list(set([i[0] for i in db.query(Description.repair).group_by(Description.housing_type).all()]))}
+            db.close()
+        return res
 
     def get_ad_by_id(self, id: int):
         with Session(autoflush=False, bind=self.engine) as db:
@@ -113,3 +114,6 @@ def ad_test_data():
             location=location, description=description)
 
     DBHelper().insert(ad, infrastructure)
+
+if __name__ == "__main__":
+    print(DBHelper().get_description_values())

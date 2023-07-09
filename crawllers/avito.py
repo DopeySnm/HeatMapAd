@@ -53,7 +53,6 @@ class CrawllerAvito(Crawller):
                 for box in boxes:
                     ad = self.parser.select_ad(box.get_attribute("outerHTML"))
                     lst_ads.append(ad)
-
                 #     break
                 # break
                 self.next_page()

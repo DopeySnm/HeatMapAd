@@ -14,54 +14,32 @@ class DBHelperUsers:
     def create_db(self):
         Base.metadata.create_all(bind=self.engine)
 
-    def insert_history(self, history: History):
-        with Session(autoflush=False, bind=self.engine) as db:
-            db.add(history)
-            db.commit()
+class DBUsers:
+    def __init__(self):
+        self.engine = DBHelperUsers().engine
 
-    def insert_favourites(self, favourites: Favourites):
-        with Session(autoflush=False, bind=self.engine) as db:
-            db.add(favourites)
-            db.commit()
-
-    def insert_tokens(self, tokens: Tokens):
-        with Session(autoflush=False, bind=self.engine) as db:
-            db.add(tokens)
-            db.commit()
-
-    def insert_user(self, user: User):
+    def insert(self, user: User):
         with Session(autoflush=False, bind=self.engine) as db:
             db.add(user)
             db.commit()
 
-    def get_list_user(self):
+    def get_user_by_name(self, name: str):
         with Session(autoflush=False, bind=self.engine) as db:
-            result = db.query(User).all()
+            result = db.query(User).filter(User.user_name == name).first()
             return result
 
-    def get_list_history_by_user_id(self, user_id: int):
-        with Session(autoflush=False, bind=self.engine) as db:
-            result = db.query(History).filter(History.user_id == user_id)
-            return result
+    # def update(self, old_ad: Ad, new_ad: Ad):
+    #     with Session(autoflush=False, bind=self.engine) as db:
+    #         get_old_ad = db.query(Ad).filter(Ad.id == old_ad.id).first()
+    #         if (get_old_ad != None):
+    #             get_old_ad.price = new_ad.price
+    #             get_old_ad.location = new_ad.location
+    #             get_old_ad.description = new_ad.description
+    #             get_old_ad.link = new_ad.link
+    #             get_old_ad.title = new_ad.title
+    #             get_old_ad.data_download = new_ad.data_download
+    #             get_old_ad.magnitude = new_ad.magnitude
+    #             db.commit()
 
-    def get_list_favourites_by_user_id(self, user_id: int):
-        with Session(autoflush=False, bind=self.engine) as db:
-            result = db.query(Favourites).filter(Favourites.user_id == user_id)
-            return result
 
-    def get_tokens_by_user_id(self, user_id: int):
-        with Session(autoflush=False, bind=self.engine) as db:
-            result = db.query(Tokens).filter(Tokens.user_id == user_id).first()
-            return result
-
-    def get_user_by_id_telegram(self, id_telegram: int):
-        with Session(autoflush=False, bind=self.engine) as db:
-            result = db.query(User).filter(User.id_telegram == id_telegram).first()
-            return result
-
-    def add_tokens_user_by_id_telegram(self, count_tokens: int, id_telegram: int):
-        with Session(autoflush=False, bind=self.engine) as db:
-            get_old_tokens = db.query(Tokens).join(User).filter(User.id_telegram == id_telegram).first()
-            if (get_old_tokens != None):
-                get_old_tokens.count_tokens += count_tokens
-                db.commit()
+DBHelperUsers().create_db()
