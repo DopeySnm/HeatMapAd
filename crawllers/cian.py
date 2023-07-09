@@ -20,23 +20,6 @@ class CrawllerCian(Crawller):
         self.parser = ParserCian()
         self.url = "https://chelyabinsk.cian.ru/cat.php?deal_type=sale&engine_version=2&offer_type=flat&p=1&region=5048&room1=1&room2=1&room3=1&room4=1&room5=1&room6=1&room7=1&room9=1"
 
-    def add_useragent(self):
-        """
-        Добавляет user-agent к драйверу
-        :return: None
-        """
-        self.options.add_argument(f"user-agent={self.useragent.random}")
-
-    def waiting_for_element(self, seconds: int, tag: By, value_tag: str):
-        """
-        Функция выполняет процесс ожидания элемента по заданным параметрам
-        :param seconds: Сколько секунд ожидать
-        :param tag: По какому тегу ожидать элемент(By.ID)
-        :param value_tag: Значение тега
-        :return: None
-        """
-        element = WebDriverWait(self.driver, seconds).until(EC.presence_of_element_located((tag, value_tag)))
-
     def scroll_page(self):
         SCROLL_PAUSE_TIME = 0.5
         self.waiting_for_element(5, By.CLASS_NAME, "_93444fe79c--header--BEBpX")
@@ -68,10 +51,10 @@ class CrawllerCian(Crawller):
         self.driver.get(link)
         time.sleep(3)
 
-
     def start(self):
         try:
             lst_ads = []
+            count = 0
             while True:
                 self.add_useragent()
                 self.driver.get(self.url)
@@ -82,8 +65,13 @@ class CrawllerCian(Crawller):
                     self.forward_page(link)
                     ad = self.parser.select_ad(self.driver.page_source)
                     lst_ads.append(ad)
-                    # break
-                # break
+                    count += 1
+
+                    if count == 1200:
+                        break
+                if count == 1200:
+                    break
+
                 self.next_page()
         except Exception:
             print(traceback.format_exc())

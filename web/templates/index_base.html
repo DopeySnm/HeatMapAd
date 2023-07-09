@@ -4,42 +4,22 @@
 	<title>HeatMap</title>
 </head>
 <body>
-<datalist id="area">
-  <option value="0"></option>
-  <option value="50"></option>
-  <option value="100"></option>
-  <option value="150"></option>
-  <option value="200"></option>
-    <option value="250"></option>
-  <option value="300"></option>
-  <option value="350"></option>
-  <option value="400"></option>
-  <option value="450"></option>
-      <option value="500"></option>
-</datalist>
-<datalist id="floor">
-  <option value="0"></option>
-  <option value="25"></option>
-  <option value="50"></option>
-  <option value="75"></option>
-  <option value="100"></option>
-</datalist>
 	<h3>HeatMap</h3>
     <div>
         <form method="post" action="/">
             <div>
                 Площадь минимум:
-                <input type="range" min="0" max="500" value="30" name="min_total_area" oninput="this.nextElementSibling.value = this.value" list="area"/><output>30</output>
+                <input type="number" min="0" max="500" value="30" name="min_total_area"/>
                 Площадь максимум:
-                <input type="range" min="0" max="500" value="100" name="max_total_area" oninput="this.nextElementSibling.value = this.value" list="area"/><output>100</output>
+                <input type="number" min="0" max="500" value="100" name="max_total_area"/>
                 Цена минимум:
-                <input type="number" min="0" max="10000000" value="1000" name="min_price"/>
+                <input type="number" min="0" max="10000000" value="8000000" name="min_price"/>
                 Цена максимум:
-                <input type="number" min="0" max="10000000" value="20000" name="max_price"/>
+                <input type="number" min="0" value="15000000" name="max_price"/>
                 Этаж минимум:
-                <input type="range" min="0" max="100" value="3" name="min_floor" oninput="this.nextElementSibling.value = this.value" list="floor"/><output>3</output>
+                <input type="number" min="0" max="100" value="3" name="min_floor"/>
                 Этаж максимум:
-                <input type="range" min="0" max="100" value="30" name="max_floor" oninput="this.nextElementSibling.value = this.value" list="floor"/><output>30</output>
+                <input type="number" min="0" max="100" value="30" name="max_floor"/>
             </div>
             <select name="housing_type">
                 <option value="Новостройка">Новостройка</option>
@@ -49,6 +29,6 @@
             <input type="submit" value="Составить карту" name="action1"/>
         </form>
     </div>
-    <iframe src="{{ url_for('static', filename='map_base.html') }}" width="100%" height="500"></iframe>
+    <iframe src="{{ url_for('static', filename='map_base.html') }}" width="100%" height="700"></iframe>
 </body>
 </html>

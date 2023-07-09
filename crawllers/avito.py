@@ -42,6 +42,7 @@ class CrawllerAvito(Crawller):
 
     def start(self):
         try:
+            count = 0
             lst_ads = []
             while True:
                 self.add_useragent()
@@ -54,8 +55,12 @@ class CrawllerAvito(Crawller):
                     ad = self.parser.select_ad(box.get_attribute("outerHTML"))
                     lst_ads.append(ad)
 
-                    # break
-                # break
+                    count += 1
+                    if count == 250:
+                        break
+                if count == 250:
+                    break
+
                 self.next_page()
         except Exception:
             print(traceback.format_exc())
