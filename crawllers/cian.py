@@ -82,8 +82,8 @@ class CrawllerCian(Crawller):
                     self.forward_page(link)
                     ad = self.parser.select_ad(self.driver.page_source)
                     lst_ads.append(ad)
-                    break
-                break
+                #     break
+                # break
                 self.next_page()
         except Exception:
             print(traceback.format_exc())

@@ -12,7 +12,7 @@ class Parser:
         base_url = "https://geocode-maps.yandex.ru/1.x"
         response = requests.get(base_url, params={
             "geocode": address,
-            "apikey": "9cfd6268-5f4f-4982-b912-676c37ec09dd",
+            "apikey": "2a03383b-8ee7-424e-9a47-629074b0c438",
             "format": "json",
         })
         response.raise_for_status()

@@ -11,7 +11,7 @@ class Infrastructure(RealEstate, Base):
     __tablename__ = 'infrastructure'
 
     id = Column(Integer, primary_key=True)
-    title = Column(String, unique=True)
+    title = Column(String)
     type = Column(String)
     date_download = Column(Date)
     location_id = Column(Integer, ForeignKey('location.id'))

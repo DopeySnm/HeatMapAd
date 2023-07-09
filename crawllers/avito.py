@@ -54,8 +54,8 @@ class CrawllerAvito(Crawller):
                     ad = self.parser.select_ad(box.get_attribute("outerHTML"))
                     lst_ads.append(ad)
 
-                    break
-                break
+                #     break
+                # break
                 self.next_page()
         except Exception:
             print(traceback.format_exc())

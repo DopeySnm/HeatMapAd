@@ -35,8 +35,9 @@ class AnalyticController:
         temp_data.clear()
 
         # for ad in result_ad:
-        #     if min_floor <= ad.description. <= max_floor:
-        #         temp_data.append(ad)
+        #     if ad.description != None:
+        #         if min_floor <= ad.description.floor <= max_floor:
+        #             temp_data.append(ad)
         # result_ad = temp_data
         # temp_data.clear()
 
