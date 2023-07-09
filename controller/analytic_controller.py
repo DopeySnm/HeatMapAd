@@ -145,14 +145,14 @@ class AnalyticController:
             "C Ремонтм", repair, \
             "Без ремонта", not_repair
 
-    def show_map_in_browser(self, city: str):
-        ads = DBHelper().get_ads_by_city(city)
-        infrastructure = DBHelper().get_infrastructure_by_city(city)
-        start_location = Parser().get_coordinates(city)
+    # def show_map_in_browser(self, city: str):
+    #     ads = DBHelper().get_ads_by_city(city)
+    #     infrastructure = DBHelper().get_infrastructure_by_city(city)
+    #     start_location = Parser().get_coordinates(city)
+    #
+    #     hmw = HeatMapWork(start_location=start_location, list_ad=ads, list_infrastructure=infrastructure)
+    #     hmw.show_map_in_browser()
 
-        hmw = HeatMapWork(start_location=start_location, list_ad=ads, list_infrastructure=infrastructure)
-        hmw.show_map_in_browser()
-
-
-if __name__ == "__main__":
-    AnalyticController().start_map()
+#
+# if __name__ == "__main__":
+#     AnalyticController().start_map()

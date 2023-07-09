@@ -1,4 +1,5 @@
 import requests
+import random
 
 
 class Parser:
@@ -10,9 +11,10 @@ class Parser:
 
     def get_coordinates(self, address):
         base_url = "https://geocode-maps.yandex.ru/1.x"
+        API = ["bbabb904-f267-4246-8120-2a1235a3d785", "c5b657e2-a966-4f81-8b3f-7681db6fbb37", "bbabf1e2-3749-4076-b863-eac9711b5d7b", "cdc3fb00-237e-4f3c-a197-ac18c2f3fd67"]
         response = requests.get(base_url, params={
             "geocode": address,
-            "apikey": "2a03383b-8ee7-424e-9a47-629074b0c438",
+            "apikey": random.choice(API),
             "format": "json",
         })
         response.raise_for_status()

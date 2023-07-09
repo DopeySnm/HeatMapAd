@@ -69,9 +69,9 @@ class HeatMapWork:
         browser.save_screenshot(str(id_tg_user) + '.png')
         browser.quit()
 
-    def show_map_in_browser(self):
+    def show_map_in_browser(self, name_path):
         self.get_html_map()
-        self.my_map.show_in_browser()
+        self.my_map.save(name_path)
 
     def get_html_map(self):
         self.my_map = folium.Map(location=(self.start_location.coordinate_x, self.start_location.coordinate_y),
