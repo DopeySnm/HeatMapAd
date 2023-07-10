@@ -24,11 +24,12 @@ async def click_ad(c: CallbackQuery, widget: Any, manager: DialogManager, item_i
     for ad in ads:
         if ad.id == int(item_id):
             manager.current_context().start_data["ad_title"] = ad.title
-            manager.current_context().start_data["lick_ad"] = ad.link
+            manager.current_context().start_data["link_ad"] = ad.link
             manager.current_context().start_data["full_address"] = ad.location.full_address
-            test = manager.current_context().start_data.get("lick_ad")
             await manager.dialog().switch_to(DialogSG.selected_ad)
 
+async def close_list_ad(c: CallbackQuery, button: Button, manager: DialogManager):
+    await manager.reset_stack()
 
 list_ads_dialog = Window(
     Format("Выберете Объявление"),
@@ -44,6 +45,7 @@ list_ads_dialog = Window(
         width=1,
         height=6,
     ),
+    Button(Format("Close"), id="close_list_ad", on_click=close_list_ad),
     getter=ads_getter,
     state=DialogSG.list_ads,
 )

@@ -25,6 +25,6 @@ class User(Base):
         self.user_name = user_name
         self.is_admin = is_admin
         self.id_telegram = id_telegram
-        self.list_favourites = list_favourites
-        self.list_history = list_history
+        self.list_favourites = list_favourites = []
+        self.list_history = list_history = []
         self.count_token = count_token
