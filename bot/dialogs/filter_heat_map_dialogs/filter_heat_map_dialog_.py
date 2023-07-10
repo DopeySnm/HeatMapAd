@@ -61,6 +61,7 @@ async def send_data(c: CallbackQuery, button: Button, manager: DialogManager):
     # print(c.from_user.full_name, data)
     # await c.message.answer(data)
     user = DBHelperUsers().get_user_by_id_telegram(c.from_user.id)
+    DBHelperUsers().add_tokens_user_by_id_telegram(-1, user.id_telegram)
     img = open(str(c.from_user.id) + '.png', 'rb')
     await c.bot.send_photo(chat_id=c.message.chat.id, photo=img)
     os.remove(str(c.from_user.id) + '.png')
