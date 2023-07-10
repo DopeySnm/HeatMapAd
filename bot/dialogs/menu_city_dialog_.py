@@ -27,7 +27,7 @@ def city_buttons_creator(btn_quantity):
 city_buttons = city_buttons_creator(select_city())
 
 menu_city_dialog = Window(
-    Format("Выберете город"),
+    Format("Выберите город"),
     ScrollingGroup(
         *city_buttons,
         id="city_group",

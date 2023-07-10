@@ -27,7 +27,6 @@ async def close_selected_ad(c: CallbackQuery, button: Button, manager: DialogMan
     await manager.reset_stack()
 
 async def get_data_filter(dialog_manager: DialogManager, **kwargs):
-
     return {
         "ad_title": {dialog_manager.current_context().start_data.get("ad_title")},
         "link_ad": {dialog_manager.current_context().start_data.get("link_ad")},

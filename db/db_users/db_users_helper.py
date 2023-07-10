@@ -54,6 +54,13 @@ class DBHelperUsers:
             result = db.query(Tokens).filter(Tokens.user_id == user_id).first()
             return result
 
+    def add_remove_admin_user_by_telegram_id(self, id_telegram: int):
+        with Session(autoflush=False, bind=self.engine) as db:
+            get_old_user = db.query(User).filter(User.id_telegram == id_telegram).first()
+            if (get_old_user != None):
+                get_old_user.is_admin = not get_old_user.is_admin
+                db.commit()
+
     def get_user_by_id_telegram(self, id_telegram: int):
         with Session(autoflush=False, bind=self.engine) as db:
             result = db.query(User).filter(User.id_telegram == id_telegram).first()

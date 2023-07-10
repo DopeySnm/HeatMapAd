@@ -11,3 +11,4 @@ class DialogSG(StatesGroup):
     user_personal_area = State()
     list_ads = State()
     selected_ad = State()
+    selected_user = State()
